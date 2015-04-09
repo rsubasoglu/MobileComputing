@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
         Button settingsButton = (Button) findViewById(R.id.settingsButton);
         Button gameButton = (Button) findViewById(R.id.gameButton);
         Button rankingButton = (Button) findViewById(R.id.rankingButton);
+        Button sensorButton = (Button) findViewById(R.id.sensorButton);
 
         // ClickListener implementieren für den Button zum Wechsel der Activity
         weiterButton.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +92,24 @@ public class MainActivity extends Activity {
                 //Intent mit den Daten füllen
 
                 // Log schreiben für Logausgabe
-                Log.e("n", "wechsel zu Game");
+                Log.e("n", "wechsel zu Ranking");
+
+                // Intent starten und zur zweiten Activity wechseln
+                startActivity(nextScreen);
+
+            }
+        });
+
+        sensorButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //Neues Intent anlegen
+                Intent nextScreen = new Intent(getApplicationContext(), SensorActivity.class);
+
+                //Intent mit den Daten füllen
+
+                // Log schreiben für Logausgabe
+                Log.e("n", "wechsel zu Sensor");
 
                 // Intent starten und zur zweiten Activity wechseln
                 startActivity(nextScreen);

@@ -16,7 +16,6 @@
             android:text="Ranking"
             android:id="@+id/textView"
             android:textSize="50sp"
-            android:textAlignment="center"
             android:lines="1"
             android:gravity="center" />
     </TableRow>
