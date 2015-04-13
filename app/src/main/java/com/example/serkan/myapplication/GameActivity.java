@@ -25,9 +25,6 @@ public class GameActivity extends Activity {
 
         TextView ball = (TextView) findViewById(R.id.textView2);
 
-        ImageView balken = new ImageView(this);
-        balken.setImageResource(R.drawable.balken);
-
         drawView = new DrawView(this, sensorService);
         drawView.setBackgroundColor(Color.GREEN);
         setContentView(drawView);
