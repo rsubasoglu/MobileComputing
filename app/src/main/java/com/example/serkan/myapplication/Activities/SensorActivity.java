@@ -1,4 +1,4 @@
-package com.example.serkan.myapplication;
+package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.TextView;
+
+import com.example.serkan.myapplication.R;
 
 /**
  * Created by recep_000 on 24.03.2015.

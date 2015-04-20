@@ -1,11 +1,14 @@
-package com.example.serkan.myapplication;
+package com.example.serkan.myapplication.Views;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
+
+import com.example.serkan.myapplication.Drawables.Balk;
+import com.example.serkan.myapplication.Drawables.Ball;
+import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
 
 import java.util.Random;
 
@@ -59,7 +62,7 @@ public class DrawView extends View {
         collision();
         drawBalks(canvas);
         if(!gameOver)
-            updateBallPosition();
+            updateBallPosition(canvas);
         drawBall(canvas);
         drawText(canvas);
 
@@ -104,7 +107,7 @@ public class DrawView extends View {
         }
     }
 
-    public void updateBallPosition() {
+    public void updateBallPosition(Canvas canvas) {
         // parameter x from accSensor:
         // 10 = left, 0 = center, -10 = right
         // get x parameter from sensor and convert it to percent
@@ -116,6 +119,7 @@ public class DrawView extends View {
             sensorXPercent = 0;
         // calculate the percent number in display coord.
         int coordX = (int)(sensorXPercent * MAX_X / 100);
+        canvas.drawText(String.valueOf(coordX), MAX_X/2, MAX_Y/2, paint);
         //if((ball.getX() - coordX) > 10 || (coordX - ball.getX()) > 10)
             ball.setX(coordX);
     }
@@ -129,7 +133,7 @@ public class DrawView extends View {
         for(int i = 0; i < balks.length; i++) {
             if(balks[i].getY()+BALK_Y >= ball.getY()-ball.getR() && balks[i].getY() <= ball.getY()+ball.getR()) {
                 if(ball.getX()+ball.getR() >= balks[i].getX() && ball.getX()-ball.getR() <= balks[i].getX()+BALK_X) {
-                    gameOver = true;
+                    //gameOver = true;
                 }
             }
         }

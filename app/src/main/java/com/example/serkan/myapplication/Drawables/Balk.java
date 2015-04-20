@@ -1,4 +1,4 @@
-package com.example.serkan.myapplication;
+package com.example.serkan.myapplication.Drawables;
 
 /**
  * Created by Serkan on 29.03.2015.

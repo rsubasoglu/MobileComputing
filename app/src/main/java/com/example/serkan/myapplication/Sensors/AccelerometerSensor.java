@@ -1,4 +1,4 @@
-package com.example.serkan.myapplication;
+package com.example.serkan.myapplication.Sensors;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -30,10 +30,9 @@ public class AccelerometerSensor implements SensorEventListener {
     public final void onSensorChanged(SensorEvent event) {
         // The light sensor returns a single value.
         // Many sensors return 3 values, one for each axis.
-        float newX = event.values[0];
-        if(Math.abs(newX - x) > 0.25)
+        //float newX = event.values[0];
+        //if(Math.abs(newX - x) > 0.05)
             x = event.values[0];
-        // Do something with this sensor value.
     }
 
     public float getX() {

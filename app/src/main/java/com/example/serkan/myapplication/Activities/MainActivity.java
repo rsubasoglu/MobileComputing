@@ -1,4 +1,4 @@
-package com.example.serkan.myapplication;
+package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
 import android.util.Log;
+
+import com.example.serkan.myapplication.R;
 
 public class MainActivity extends Activity {
 

@@ -1,14 +1,14 @@
-package com.example.serkan.myapplication;
+package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.serkan.myapplication.Views.DrawView;
+import com.example.serkan.myapplication.R;
 
 /**
  * Created by Serkan on 19.03.2015.
