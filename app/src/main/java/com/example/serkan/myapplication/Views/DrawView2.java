@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-import com.example.serkan.myapplication.Drawables.Balk;
+import com.example.serkan.myapplication.Drawables.Route;
 import com.example.serkan.myapplication.Drawables.Ball;
 import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
 
@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * Created by Serkan on 29.03.2015.
  */
-public class DrawView extends View {
+public class DrawView2 extends View {
     Paint paint = new Paint();
     AccelerometerSensor accSensor;
 
@@ -24,14 +24,13 @@ public class DrawView extends View {
     long startTime;
     long elapsedTime = 0;
 
-    // display coord. & balk size
+    // display coord. & route size
     int MAX_X = 1080;
     int MAX_Y = 1920;
-    int BALK_X = 300;
-    int BALK_Y = 100;
+    int ROUTE_WIDTH = 300;
 
     // balks
-    Balk[] balks = new Balk[7];
+    Route[] route = new Route[10];
 
     // ball
     Ball ball;
@@ -40,17 +39,18 @@ public class DrawView extends View {
     boolean gameOver = false;
     int points = 0;
 
-    public DrawView(Context context, Object sensorService) {
+    public DrawView2(Context context, Object sensorService) {
         super(context);
         accSensor = new AccelerometerSensor(sensorService);
-        // create temp balks
-        for(int i = 0; i < balks.length; i++) {
-            Balk b = new Balk(0, 1900);
-            balks[i] = b;
+        // create temp route
+        int x1 = MAX_X/2+ROUTE_WIDTH/2;
+        for(int i = 0; i < route.length; i++) {
+            Route r = new Route(x1, 0, x1 + ROUTE_WIDTH, MAX_Y);
+            route[i] = r;
         }
 
         // create ball
-        ball = new Ball(MAX_X/2, 1500, 50);
+        ball = new Ball(MAX_X/2, MAX_Y/2, 50);
 
         // start the animation
         this.startTime = System.currentTimeMillis();
@@ -59,15 +59,15 @@ public class DrawView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        collision();
-        drawBalks(canvas);
+        //collision();
+        drawRoute(canvas);
         if(!gameOver)
-            updateBallPosition(canvas);
+            updateRoutePosition();
         drawBall(canvas);
         drawText(canvas);
 
         if(elapsedTime > animationDuration && !gameOver) {
-            addNewBalk();
+            //addNewRoute();
             elapsedTime = 0;
         }
 
@@ -81,12 +81,15 @@ public class DrawView extends View {
         canvas.drawText(String.valueOf(points), 0, String.valueOf(points).length(), 20, 80, paint);
     }
 
-    public int randomBalkPositionX() {
+    /*
+    public int randomRoutePositionX() {
         Random r = new Random();
         return r.nextInt((MAX_X - BALK_X));
     }
+    */
 
-    public void addNewBalk() {
+    /*
+    public void addNewRoute() {
         for(int i = 0; i < balks.length; i++) {
             if(balks[i].getY() > MAX_Y) {
                 int randomX = randomBalkPositionX();
@@ -97,21 +100,23 @@ public class DrawView extends View {
         }
         points++;
     }
+    */
 
-    public void drawBalks(Canvas canvas) {
+    public void drawRoute(Canvas canvas) {
         paint.setColor(Color.RED);
-        for(int i = 0; i < balks.length; i++) {
-            canvas.drawRect(balks[i].getX(), balks[i].getY(), balks[i].getX()+BALK_X, balks[i].getY()+BALK_Y, paint);
-            if(!gameOver)
-                balks[i].goDown();
+        for(int i = 0; i < route.length; i++) {
+            canvas.drawRect(route[i].getX1(), route[i].getY1(), route[i].getX2(), route[i].getY2(), paint);
         }
     }
 
-    public void updateBallPosition(Canvas canvas) {
+    public void updateRoutePosition() {
         // parameter x from accSensor:
         // 10 = left, 0 = center, -10 = right
         // get x parameter from sensor and convert it to percent
         float sensorX = accSensor.getX() * (-1);
+        float sensorY = accSensor.getY();
+
+        // calculate x
         float sensorXPercent = (sensorX + 5) * 100 / (10);
         if(sensorXPercent > 100)
             sensorXPercent = 100;
@@ -119,9 +124,26 @@ public class DrawView extends View {
             sensorXPercent = 0;
         // calculate the percent number in display coord.
         int coordX = (int)(sensorXPercent * MAX_X / 100);
-        canvas.drawText(String.valueOf(coordX), MAX_X/2, MAX_Y/2, paint);
-        //if((ball.getX() - coordX) > 10 || (coordX - ball.getX()) > 10)
-            ball.setX(coordX);
+
+        // calculate y
+        float sensorYPercent = (sensorY + 5) * 100 / (10);
+        if(sensorYPercent > 100)
+            sensorYPercent = 100;
+        else if(sensorYPercent < 0)
+            sensorYPercent = 0;
+        // calculate the percent number in display coord.
+        int coordY = (int)(sensorYPercent * MAX_Y / 100);
+
+        coordX /= 50;
+        coordY /= 50;
+        for(int i = 0; i < route.length; i++) {
+            if(sensorX > 0)
+                route[i].goRight(coordX);
+            else route[i].goLeft(coordX);
+            if(sensorY > 0)
+                route[i].goUp(coordY);
+            else route[i].goDown(coordY);
+        }
     }
 
     public void drawBall(Canvas canvas) {
@@ -129,6 +151,7 @@ public class DrawView extends View {
         canvas.drawCircle(ball.getX(), ball.getY(), ball.getR(), paint);
     }
 
+    /*
     public void collision() {
         for(int i = 0; i < balks.length; i++) {
             if(balks[i].getY()+BALK_Y >= ball.getY()-ball.getR() && balks[i].getY() <= ball.getY()+ball.getR()) {
@@ -138,4 +161,5 @@ public class DrawView extends View {
             }
         }
     }
+    */
 }

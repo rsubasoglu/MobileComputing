@@ -29,7 +29,7 @@ public class SensorActivity extends Activity implements SensorEventListener {
         setContentView(R.layout.activity_sensor);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
         textViewX = (TextView) findViewById(R.id.textViewX);
         textViewY = (TextView) findViewById(R.id.textViewY);

@@ -32,6 +32,10 @@
             android:name=".Activities.RankingActivity"
             android:label="@string/title_activity_ranking">
         </activity>
+        <activity
+            android:name=".Activities.SensorActivity"
+            android:label="@string/title_activity_sensor">
+        </activity>
     </application>
 
 </manifest>

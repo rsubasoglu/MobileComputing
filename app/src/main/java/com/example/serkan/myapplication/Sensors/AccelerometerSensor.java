@@ -14,10 +14,11 @@ public class AccelerometerSensor implements SensorEventListener {
     private Sensor accelerometer;
 
     private float x;
+    private float y;
 
     public AccelerometerSensor(Object sensorService) {
         sensorManager = (SensorManager) sensorService;
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
@@ -32,10 +33,15 @@ public class AccelerometerSensor implements SensorEventListener {
         // Many sensors return 3 values, one for each axis.
         //float newX = event.values[0];
         //if(Math.abs(newX - x) > 0.05)
-            x = event.values[0];
+        x = event.values[2];
+        y = event.values[1];
     }
 
     public float getX() {
         return x;
+    }
+
+    public float getY() {
+        return y;
     }
 }
