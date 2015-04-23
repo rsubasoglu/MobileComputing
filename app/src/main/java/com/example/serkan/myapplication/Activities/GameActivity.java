@@ -4,23 +4,31 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.serkan.myapplication.Views.DrawView1;
+import com.example.serkan.myapplication.Database.DatabaseHandler;
+import com.example.serkan.myapplication.Drawables.Score;
 import com.example.serkan.myapplication.R;
+import com.example.serkan.myapplication.Views.DrawView1;
+
+import java.util.List;
 
 /**
  * Created by Serkan on 19.03.2015.
  */
 public class GameActivity extends Activity {
     DrawView1 drawView;
-
+    //Highscore
+    //private SharedPreferences gamePrefs;
+    //public static final String GAME_PREFS = "ArithmeticFile";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        //gamePrefs = getSharedPreferences(GAME_PREFS, 0);
         Object sensorService = getSystemService(Context.SENSOR_SERVICE);
 
         TextView ball = (TextView) findViewById(R.id.textView2);
@@ -34,5 +42,26 @@ public class GameActivity extends Activity {
                 finish();
             }
         });
+
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        /**
+         * CRUD Operations
+         * */
+        // Inserting Contacts
+        Log.d("Insert: ", "Inserting ..");
+        db.addScore(new Score("13-02-2015", 5));
+        db.addScore(new Score("16-02-2015", 15));
+        db.addScore(new Score("18-02-2015", 25));
+
+        // Reading all contacts
+        Log.d("Reading: ", "Reading all scores..");
+        List<Score> scores = db.getAllScores();
+
+        for (Score cn : scores) {
+            String log = "Id: "+cn.getScoreId()+" ,Date: " + cn.getScoreDate() + " ,Score: " + cn.getScoreText();
+            // Writing Contacts to log
+            Log.d("Name: ", log);
+        }
     }
 }

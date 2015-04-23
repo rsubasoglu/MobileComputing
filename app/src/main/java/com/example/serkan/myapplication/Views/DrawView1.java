@@ -8,8 +8,13 @@ import android.view.View;
 
 import com.example.serkan.myapplication.Drawables.Balk;
 import com.example.serkan.myapplication.Drawables.Ball;
+import com.example.serkan.myapplication.Drawables.Score;
 import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
 
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -25,10 +30,16 @@ public class DrawView1 extends View {
     long elapsedTime = 0;
 
     // display coord. & balk size
-    int MAX_X = 1080;
-    int MAX_Y = 1920;
-    int BALK_X = 300;
-    int BALK_Y = 100;
+    int MAX_X = 480;
+    int MAX_Y = 800;
+    int BALK_X = 150;
+    int BALK_Y = 50;
+
+    //Display Groesse 5
+    //int MAX_Y = 1920;
+    //int MAX_X = 1080;
+    //int BALK_X = 300;
+    //int BALK_Y = 100;
 
     // balks
     Balk[] balks = new Balk[7];
@@ -50,7 +61,8 @@ public class DrawView1 extends View {
         }
 
         // create ball
-        ball = new Ball(MAX_X/2, 1500, 50);
+        //ball = new Ball(MAX_X/2, 1500, 50);
+        ball = new Ball(MAX_X/2, ((MAX_X/2)+150), 20);
 
         // start the animation
         this.startTime = System.currentTimeMillis();
@@ -61,11 +73,13 @@ public class DrawView1 extends View {
     public void onDraw(Canvas canvas) {
         collision();
         drawBalks(canvas);
-        if(!gameOver)
+        if(!gameOver) {
             updateBallPosition(canvas);
-        drawBall(canvas);
-        drawText(canvas);
-
+            drawBall(canvas);
+            drawText(canvas);
+        }else{
+            setHighScore(canvas);
+        }
         if(elapsedTime > animationDuration && !gameOver) {
             addNewBalk();
             elapsedTime = 0;
@@ -112,7 +126,7 @@ public class DrawView1 extends View {
         // 80 = left, 0 = center, -80 = right
         // get x parameter from sensor and convert it to percent
         float sensorX = accSensor.getX() * (-1);
-        float sensorXPercent = (sensorX + 80) * 100 / (160);
+        float sensorXPercent = (sensorX + 40) * 100 / (80);
         if(sensorXPercent > 100)
             sensorXPercent = 100;
         else if(sensorXPercent < 0)
@@ -137,5 +151,21 @@ public class DrawView1 extends View {
                 }
             }
         }
+    }
+
+    private void setHighScore(Canvas canvas){
+        if(points>0){
+            //we have a valid score
+
+            DateFormat dateForm = new SimpleDateFormat("dd MMMM yyyy");
+            String dateOutput = dateForm.format(new Date());
+
+            Score score = new Score(dateOutput, points);
+            paint.setColor(Color.RED);
+            paint.setTextSize(50);
+            canvas.drawText(String.valueOf(score.getScoreText()), 0, String.valueOf(score.getScoreText()).length(), 80, 80, paint);
+
+        }
+
     }
 }
