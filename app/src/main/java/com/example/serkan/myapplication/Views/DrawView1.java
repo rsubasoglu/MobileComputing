@@ -30,10 +30,10 @@ public class DrawView1 extends View {
     long elapsedTime = 0;
 
     // display coord. & balk size
-    int MAX_X = 480;
-    int MAX_Y = 800;
-    int BALK_X = 150;
-    int BALK_Y = 50;
+    int MAX_X = 1080;
+    int MAX_Y = 1920;
+    int BALK_X = 300;
+    int BALK_Y = 100;
 
     //Display Groesse 5
     //int MAX_Y = 1920;
@@ -61,8 +61,7 @@ public class DrawView1 extends View {
         }
 
         // create ball
-        //ball = new Ball(MAX_X/2, 1500, 50);
-        ball = new Ball(MAX_X/2, ((MAX_X/2)+150), 20);
+        ball = new Ball(MAX_X/2, 1500, 50);
 
         // start the animation
         this.startTime = System.currentTimeMillis();
@@ -113,8 +112,10 @@ public class DrawView1 extends View {
     }
 
     public void drawBalks(Canvas canvas) {
-        paint.setColor(Color.RED);
         for(int i = 0; i < balks.length; i++) {
+            paint.setColor(Color.BLACK);
+            canvas.drawRect(0, balks[i].getY(), MAX_X, balks[i].getY()+BALK_Y, paint);
+            paint.setColor(Color.RED);
             canvas.drawRect(balks[i].getX(), balks[i].getY(), balks[i].getX()+BALK_X, balks[i].getY()+BALK_Y, paint);
             if(!gameOver)
                 balks[i].goDown();
