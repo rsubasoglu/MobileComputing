@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
+import com.example.serkan.myapplication.Database.DatabaseHandler;
 import com.example.serkan.myapplication.Drawables.Balk;
 import com.example.serkan.myapplication.Drawables.Ball;
 import com.example.serkan.myapplication.Drawables.Score;
@@ -34,12 +35,6 @@ public class DrawView1 extends View {
     int MAX_Y = 1920;
     int BALK_X = 300;
     int BALK_Y = 100;
-
-    //Display Groesse 5
-    //int MAX_Y = 1920;
-    //int MAX_X = 1080;
-    //int BALK_X = 300;
-    //int BALK_Y = 100;
 
     // balks
     Balk[] balks = new Balk[7];
@@ -74,11 +69,12 @@ public class DrawView1 extends View {
         drawBalks(canvas);
         if(!gameOver) {
             updateBallPosition(canvas);
-            drawBall(canvas);
-            drawText(canvas);
-        }else{
-            setHighScore(canvas);
         }
+        else {
+            setHighScore(this.getContext());
+        }
+        drawBall(canvas);
+        drawText(canvas);
         if(elapsedTime > animationDuration && !gameOver) {
             addNewBalk();
             elapsedTime = 0;
@@ -134,7 +130,7 @@ public class DrawView1 extends View {
             sensorXPercent = 0;
         // calculate the percent number in display coord.
         int coordX = (int)(sensorXPercent * MAX_X / 100);
-        canvas.drawText(String.valueOf(coordX), MAX_X/2, MAX_Y/2, paint);
+        canvas.drawText(String.valueOf(coordX), MAX_X / 2, MAX_Y / 2, paint);
         //if((ball.getX() - coordX) > 10 || (coordX - ball.getX()) > 10)
             ball.setX(coordX);
     }
@@ -154,18 +150,15 @@ public class DrawView1 extends View {
         }
     }
 
-    private void setHighScore(Canvas canvas){
-        if(points>0){
-            //we have a valid score
-
+    private void setHighScore(Context context) {
+        if(points > 0){
             DateFormat dateForm = new SimpleDateFormat("dd MMMM yyyy");
             String dateOutput = dateForm.format(new Date());
 
             Score score = new Score(dateOutput, points);
-            paint.setColor(Color.RED);
-            paint.setTextSize(50);
-            canvas.drawText(String.valueOf(score.getScoreText()), 0, String.valueOf(score.getScoreText()).length(), 80, 80, paint);
-
+            DatabaseHandler db = new DatabaseHandler(context);
+            db.addScore(score);
+            points = 0;
         }
 
     }

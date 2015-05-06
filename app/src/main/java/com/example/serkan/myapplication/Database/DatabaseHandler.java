@@ -20,7 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "HighscoreManager";
+    private static final String DATABASE_NAME = "HighScore";
 
     // Score table name
     private static final String TABLE_SCORES = "highscores";
@@ -56,8 +56,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_DATE, Score.getScoreDate()); // Score Date
-        values.put(KEY_SCORE_NUMBER, Score.getScoreNum()); // Score Number
+        values.put(KEY_DATE, score.getScoreDate()); // Score Date
+        values.put(KEY_SCORE_NUMBER, score.getScoreNum()); // Score Number
 
         // Inserting Row
         db.insert(TABLE_SCORES, null, values);
@@ -79,6 +79,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 Score score = new Score();
                 score.setScoreId(Integer.parseInt(cursor.getString(0)));
                 score.setScoreDate(cursor.getString(1));
+                int num = Integer.parseInt(cursor.getString(2));
                 score.setScoreNum(Integer.parseInt(cursor.getString(2)));
                 // Adding contact to list
                 scoreList.add(score);

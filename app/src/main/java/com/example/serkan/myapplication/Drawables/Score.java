@@ -4,9 +4,9 @@ package com.example.serkan.myapplication.Drawables;
  * Created by Ahmed on 22.04.2015.
  */
 public class Score{
-    private static String scoreDate;
-    private static int scoreNum;
-    private static int scoreId;
+    private String scoreDate;
+    private int scoreNum;
+    private int scoreId;
 
     //empty Konstruktor
     public Score(){
@@ -37,7 +37,7 @@ public class Score{
     }
 
     //get Date
-    public static String getScoreDate(){
+    public String getScoreDate(){
         return scoreDate;
     }
 
@@ -47,7 +47,7 @@ public class Score{
     }
 
     //get Score
-    public static int getScoreNum(){
+    public int getScoreNum(){
         return scoreNum;
     }
 
@@ -61,4 +61,5 @@ public class Score{
     {
         return scoreId+" : "+scoreDate+" - "+scoreNum;
     }
+
 }

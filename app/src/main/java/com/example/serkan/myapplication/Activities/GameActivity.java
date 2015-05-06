@@ -43,25 +43,5 @@ public class GameActivity extends Activity {
             }
         });
 
-        DatabaseHandler db = new DatabaseHandler(this);
-
-        /**
-         * CRUD Operations
-         * */
-        // Inserting Contacts
-        Log.d("Insert: ", "Inserting ..");
-        db.addScore(new Score("13-02-2015", 5));
-        db.addScore(new Score("16-02-2015", 15));
-        db.addScore(new Score("18-02-2015", 25));
-
-        // Reading all contacts
-        Log.d("Reading: ", "Reading all scores..");
-        List<Score> scores = db.getAllScores();
-
-        for (Score cn : scores) {
-            String log = "Id: "+cn.getScoreId()+" ,Date: " + cn.getScoreDate() + " ,Score: " + cn.getScoreText();
-            // Writing Contacts to log
-            Log.d("Name: ", log);
-        }
     }
 }

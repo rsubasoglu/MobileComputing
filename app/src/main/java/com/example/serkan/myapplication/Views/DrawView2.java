@@ -117,7 +117,7 @@ public class DrawView2 extends View {
         float sensorY = accSensor.getY();
 
         // calculate x
-        float sensorXPercent = (sensorX + 5) * 100 / (10);
+        float sensorXPercent = (sensorX + 40) * 100 / (80);
         if(sensorXPercent > 100)
             sensorXPercent = 100;
         else if(sensorXPercent < 0)
@@ -126,7 +126,7 @@ public class DrawView2 extends View {
         int coordX = (int)(sensorXPercent * MAX_X / 100);
 
         // calculate y
-        float sensorYPercent = (sensorY + 5) * 100 / (10);
+        float sensorYPercent = (sensorY + 40) * 100 / (80);
         if(sensorYPercent > 100)
             sensorYPercent = 100;
         else if(sensorYPercent < 0)

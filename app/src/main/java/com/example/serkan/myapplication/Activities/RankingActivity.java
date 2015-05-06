@@ -1,8 +1,10 @@
 package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,44 +12,51 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.serkan.myapplication.Database.DatabaseHandler;
+import com.example.serkan.myapplication.Drawables.Score;
 import com.example.serkan.myapplication.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Serkan on 19.03.2015.
  */
-public class RankingActivity extends Activity implements AdapterView.OnItemClickListener {
-    //public static final String Highscore = "HIGHSCORE";
-    private ListView ScoreListView;
-    private String[] score = new String[] {"2", "12",
-            "2"};
+public class RankingActivity extends ListActivity {
+
+    DatabaseHandler db = new DatabaseHandler(this);
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
-        Button backButton = (Button) findViewById(R.id.backButton);
+        // hol daten aus der datenbank
+        List<Score> scores = db.getAllScores();
+        List<String> newList = new ArrayList<String>();
 
-        Intent inIntent = getIntent();
+        for (Score cn : scores) {
+            int id = cn.getScoreId();
+            String date = cn.getScoreDate();
+            int num = cn.getScoreNum();
+            // speichere die daten in eine String List
+            newList.add((date + " - " + num));
+        }
 
-        // Referenz auf die View besorgen
-        ScoreListView = (ListView) findViewById(R.id.listView);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, score);
-        ScoreListView.setAdapter(adapter);
-        ScoreListView.setOnItemClickListener(this);
-        backButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-                //Closing SecondScreen Activity
-                finish();
-            }
-        });
+        // zeige die daten in der ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, newList);
+        setListAdapter(adapter);
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(this, "Score " + score[i] + " ausgewählt!",
-                Toast.LENGTH_SHORT).show();
+    protected void onResume() {
+        //db.open();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        db.close();
+        super.onPause();
     }
 }
