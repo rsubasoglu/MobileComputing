@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
- * Created by Serkan on 07.05.2015.
+ * Created on 07.05.2015.
  */
 public class SinglePlayerView extends View{
     Activity activity;
@@ -37,7 +37,7 @@ public class SinglePlayerView extends View{
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         fl.setLayoutParams(lp);
 
-        fl.addView(this.);
+        fl.addView(this);
         fl.addView(balkView);
         fl.addView(ballView);
 

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.serkan.myapplication" >
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -35,6 +38,14 @@
         <activity
             android:name=".Activities.SensorActivity"
             android:label="@string/title_activity_sensor">
+        </activity>
+        <activity
+            android:name=".Activities.MultiplayerActivity"
+            android:label="@string/title_activity_multiplayer">
+        </activity>
+        <activity
+            android:name=".Activities.ClientActivity"
+            android:label="@string/title_activity_client">
         </activity>
     </application>
 

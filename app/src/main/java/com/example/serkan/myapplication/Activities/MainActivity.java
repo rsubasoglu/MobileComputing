@@ -30,6 +30,8 @@ public class MainActivity extends Activity {
         Button gameButton = (Button) findViewById(R.id.gameButton);
         Button rankingButton = (Button) findViewById(R.id.rankingButton);
         Button sensorButton = (Button) findViewById(R.id.sensorButton);
+        Button multiplayerButton = (Button) findViewById(R.id.multiplayerButton);
+        Button clientButton = (Button) findViewById(R.id.clientButton);
 
         // ClickListener implementieren für den Button zum Wechsel der Activity
         weiterButton.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +114,40 @@ public class MainActivity extends Activity {
 
                 // Log schreiben für Logausgabe
                 Log.e("n", "wechsel zu Sensor");
+
+                // Intent starten und zur zweiten Activity wechseln
+                startActivity(nextScreen);
+
+            }
+        });
+
+        multiplayerButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //Neues Intent anlegen
+                Intent nextScreen = new Intent(getApplicationContext(), MultiplayerActivity.class);
+
+                //Intent mit den Daten füllen
+
+                // Log schreiben für Logausgabe
+                Log.e("n", "wechsel zu Multiplayer");
+
+                // Intent starten und zur zweiten Activity wechseln
+                startActivity(nextScreen);
+
+            }
+        });
+
+        clientButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                //Neues Intent anlegen
+                Intent nextScreen = new Intent(getApplicationContext(), ClientActivity.class);
+
+                //Intent mit den Daten füllen
+
+                // Log schreiben für Logausgabe
+                Log.e("n", "wechsel zu Client");
 
                 // Intent starten und zur zweiten Activity wechseln
                 startActivity(nextScreen);

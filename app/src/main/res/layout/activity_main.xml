@@ -52,4 +52,16 @@
         android:text="Sensor"
         android:id="@+id/sensorButton"
         android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Multiplayer"
+        android:id="@+id/multiplayerButton"
+        android:layout_gravity="center_horizontal" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Client"
+        android:id="@+id/clientButton"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

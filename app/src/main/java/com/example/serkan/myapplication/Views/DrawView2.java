@@ -13,7 +13,7 @@ import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
 import java.util.Random;
 
 /**
- * Created by Serkan on 29.03.2015.
+ * Created on 29.03.2015.
  */
 public class DrawView2 extends View {
     Paint paint = new Paint();

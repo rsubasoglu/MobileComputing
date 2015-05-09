@@ -1,8 +1,7 @@
 package com.example.serkan.myapplication.Drawables;
 
 /**
- * Created by Serkan on 01.04.2015.
- * Test by Ahmed
+ * Created on 01.04.2015.
  */
 public class Ball {
 

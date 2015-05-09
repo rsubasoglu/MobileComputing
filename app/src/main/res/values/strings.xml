@@ -8,4 +8,6 @@
     <string name="title_activity_game">Game</string>
     <string name="title_activity_ranking">Ranking</string>
     <string name="title_activity_sensor">Sensor</string>
+    <string name="title_activity_multiplayer">Multiplayer</string>
+    <string name="title_activity_client">Client</string>
 </resources>

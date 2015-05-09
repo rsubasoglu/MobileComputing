@@ -11,7 +11,7 @@ import com.example.serkan.myapplication.Drawables.Balk;
 import java.util.Random;
 
 /**
- * Created by Serkan on 07.05.2015.
+ * Created on 07.05.2015.
  */
 public class BalkView extends View {
     Paint paint = new Paint();

@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Created by Serkan on 29.03.2015.
+ * Created on 29.03.2015.
  */
 public class DrawView1 extends View {
     Paint paint = new Paint();

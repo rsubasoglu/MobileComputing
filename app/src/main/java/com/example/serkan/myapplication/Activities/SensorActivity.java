@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.serkan.myapplication.R;
 
 /**
- * Created by recep_000 on 24.03.2015.
+ * Created on 24.03.2015.
  * Quelle: http://developer.android.com/guide/topics/sensors/sensors_overview.html
  */
 

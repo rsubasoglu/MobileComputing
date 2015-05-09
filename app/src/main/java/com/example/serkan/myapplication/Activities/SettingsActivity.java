@@ -8,7 +8,7 @@ import android.widget.Button;
 import com.example.serkan.myapplication.R;
 
 /**
- * Created by Serkan on 19.03.2015.
+ * Created on 19.03.2015.
  */
 public class SettingsActivity extends Activity {
 

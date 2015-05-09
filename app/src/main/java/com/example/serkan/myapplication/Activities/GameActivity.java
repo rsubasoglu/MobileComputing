@@ -18,7 +18,7 @@ import com.example.serkan.myapplication.Views.SinglePlayerView;
 import java.util.List;
 
 /**
- * Created by Serkan on 19.03.2015.
+ * Created on 19.03.2015.
  */
 public class GameActivity extends Activity {
     DrawView1 drawView;

@@ -11,7 +11,7 @@ import com.example.serkan.myapplication.Views.BallView;
 import com.example.serkan.myapplication.Views.BalkView;
 
 /**
- * Created by Serkan on 07.05.2015.
+ * Created on 07.05.2015.
  */
 public class SinglePlayerMode {
     Activity activity;

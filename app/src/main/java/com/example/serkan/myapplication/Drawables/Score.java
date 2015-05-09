@@ -1,7 +1,7 @@
 package com.example.serkan.myapplication.Drawables;
 
 /**
- * Created by Ahmed on 22.04.2015.
+ * Created on 22.04.2015.
  */
 public class Score{
     private String scoreDate;

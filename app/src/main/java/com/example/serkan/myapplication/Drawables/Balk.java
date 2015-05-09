@@ -1,7 +1,7 @@
 package com.example.serkan.myapplication.Drawables;
 
 /**
- * Created by Serkan on 29.03.2015.
+ * Created on 29.03.2015.
  */
 public class Balk {
     private int X;

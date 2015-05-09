@@ -10,7 +10,7 @@ import com.example.serkan.myapplication.Drawables.Ball;
 import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
 
 /**
- * Created by Serkan on 07.05.2015.
+ * Created on 07.05.2015.
  */
 public class BallView extends View {
     Paint paint = new Paint();

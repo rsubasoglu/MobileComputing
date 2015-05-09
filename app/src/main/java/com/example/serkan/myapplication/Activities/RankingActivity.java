@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Serkan on 19.03.2015.
+ * Created on 19.03.2015.
  */
 public class RankingActivity extends ListActivity {
 
