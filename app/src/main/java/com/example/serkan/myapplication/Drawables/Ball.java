@@ -23,7 +23,7 @@ public class Ball {
     }
 
     public int getX() {
-        return x;
+        return this.x;
     }
 
     public float getR() {

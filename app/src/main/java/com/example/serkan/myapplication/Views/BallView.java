@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import com.example.serkan.myapplication.Drawables.Ball;
@@ -13,6 +14,11 @@ import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
  * Created on 07.05.2015.
  */
 public class BallView extends View {
+    int framesPerSecond = 60;
+    long animationDuration = 30; // 2 seconds
+    long startTime;
+    long elapsedTime = 0;
+
     Paint paint = new Paint();
     AccelerometerSensor accSensor;
 
@@ -24,14 +30,20 @@ public class BallView extends View {
     Ball ball;
 
     // game variables
-    boolean gameOver = false;
+    boolean gameOver = true;
 
     public BallView(Context context, Object sensorService) {
         super(context);
-        accSensor = new AccelerometerSensor(sensorService);
-
+        if(sensorService != null) {
+            accSensor = new AccelerometerSensor(sensorService);
+            gameOver = false;
+        }
         // create ball
         ball = new Ball(MAX_X/2, 1500, 50);
+
+        // start the animation
+        this.startTime = System.currentTimeMillis();
+        this.postInvalidate();
     }
 
     @Override
@@ -40,6 +52,13 @@ public class BallView extends View {
             updateBallPosition(canvas);
         }
         drawBall(canvas);
+
+        if(elapsedTime > animationDuration && !gameOver) {
+
+            elapsedTime = 0;
+        }
+        elapsedTime++;
+        this.postInvalidateDelayed(1000 / framesPerSecond);
     }
 
     public void updateBallPosition(Canvas canvas) {
@@ -78,5 +97,9 @@ public class BallView extends View {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+
+    public void setRemoteBall(int x) {
+        ball.setX(x);
     }
 }

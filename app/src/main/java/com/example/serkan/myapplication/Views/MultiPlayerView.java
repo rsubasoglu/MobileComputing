@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
- * Created on 07.05.2015.
+ * Created by Serkan on 10.05.2015.
  */
-public class SinglePlayerView extends View{
+public class MultiPlayerView extends View {
     int framesPerSecond = 60;
     long animationDuration = 30; // 2 seconds
     long startTime;
@@ -26,16 +26,19 @@ public class SinglePlayerView extends View{
 
     // views
     BallView ballView;
+    BallView ballView2;
     BalkView balkView;
 
     // game variables
     boolean gameOver = false;
+    int remoteBallX = 0;
 
-    public SinglePlayerView(Context context, Activity activity, Object sensorService) {
+    public MultiPlayerView(Context context, Activity activity, Object sensorService) {
         super(context);
         this.activity = activity;
 
         ballView = new BallView(activity, sensorService);
+        ballView2 = new BallView(activity, null);
         balkView = new BalkView(activity);
 
         FrameLayout fl = new FrameLayout(activity);
@@ -44,6 +47,7 @@ public class SinglePlayerView extends View{
 
         fl.addView(this);
         fl.addView(balkView);
+        fl.addView(ballView2);
         fl.addView(ballView);
 
         activity.setContentView(fl);
@@ -56,6 +60,7 @@ public class SinglePlayerView extends View{
     @Override
     public void onDraw(Canvas canvas) {
         collision();
+        ballView2.setRemoteBall(remoteBallX);
 
         if(elapsedTime > animationDuration && !gameOver) {
 
@@ -76,7 +81,7 @@ public class SinglePlayerView extends View{
         }
     }
 
-    public int getBallX() {
-        return ballView.getBallX();
+    public void setRemoteBallX(int x) {
+        this.remoteBallX = x;
     }
 }

@@ -1,14 +1,17 @@
 package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.serkan.myapplication.R;
+import com.example.serkan.myapplication.Views.MultiPlayerView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,6 +28,9 @@ public class ClientActivity extends Activity{
     TextView textResponse;
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonClear;
+    Activity activity = this;
+
+    MultiPlayerView multiPlayerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,8 @@ public class ClientActivity extends Activity{
                             editTextAddress.getText().toString(),
                             Integer.parseInt(editTextPort.getText().toString()));
                     myClientTask.execute();
+                    Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+                    multiPlayerView = new MultiPlayerView(activity, activity, sensorService);
                 }};
 
     public class MyClientTask extends AsyncTask<Void, Void, Void> {
@@ -63,10 +71,12 @@ public class ClientActivity extends Activity{
         String dstAddress;
         int dstPort;
         String response = "";
+        Activity activity;
 
         MyClientTask(String addr, int port){
             dstAddress = addr;
             dstPort = port;
+            this.activity = activity;
         }
 
         @Override
@@ -82,15 +92,30 @@ public class ClientActivity extends Activity{
                 byte[] buffer = new byte[1024];
 
                 int bytesRead;
-                InputStream inputStream = socket.getInputStream();
-
+                while(true) {
+                    InputStream inputStream = socket.getInputStream();
+                    Log.e("n", "hier");
     /*
      * notice:
      * inputStream.read() will block if no data return
      */
-                while ((bytesRead = inputStream.read(buffer)) != -1){
-                    byteArrayOutputStream.write(buffer, 0, bytesRead);
-                    response += byteArrayOutputStream.toString("UTF-8");
+                    int zahl = 0;
+                    int zaehler = 0;
+
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        byteArrayOutputStream.write(buffer, 0, bytesRead);
+                        response += byteArrayOutputStream.toString("UTF-8");
+                        zaehler++;
+                        if (zaehler == 3) {
+                            String temp = response.substring(0, 3);
+                            zahl = Integer.valueOf(temp);
+                            Log.e("n", "" + zahl);
+                            multiPlayerView.setRemoteBallX(zahl);
+                            zaehler = 0;
+                            response = "";
+                            zahl = 0;
+                        }
+                    }
                 }
 
             } catch (UnknownHostException e) {

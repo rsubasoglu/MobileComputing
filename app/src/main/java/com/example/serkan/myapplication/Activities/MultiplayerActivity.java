@@ -1,10 +1,13 @@
 package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.serkan.myapplication.R;
+import com.example.serkan.myapplication.Views.SinglePlayerView;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,6 +27,7 @@ public class MultiplayerActivity  extends Activity {
     TextView info, infoip, msg;
     String message = "";
     ServerSocket serverSocket;
+    SinglePlayerView spm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,11 @@ public class MultiplayerActivity  extends Activity {
 
         infoip.setText(getIpAddress());
 
-        Thread socketServerThread = new Thread(new SocketServerThread());
+        Thread socketServerThread = new Thread(new SocketServerThread(this));
         socketServerThread.start();
+
+        Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+        spm = new SinglePlayerView(this, this, sensorService);
     }
 
     @Override
@@ -57,6 +64,11 @@ public class MultiplayerActivity  extends Activity {
 
         static final int SocketServerPORT = 8080;
         int count = 0;
+        Activity activity;
+
+        public SocketServerThread(Activity activity) {
+            this.activity = activity;
+        }
 
         @Override
         public void run() {
@@ -85,8 +97,7 @@ public class MultiplayerActivity  extends Activity {
                         }
                     });
 
-                    SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
-                            socket, count);
+                    SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(socket, count, activity);
                     socketServerReplyThread.run();
 
                 }
@@ -102,25 +113,28 @@ public class MultiplayerActivity  extends Activity {
 
         private Socket hostThreadSocket;
         int cnt;
+        Activity activity;
 
-        SocketServerReplyThread(Socket socket, int c) {
+        SocketServerReplyThread(Socket socket, int c, Activity activity) {
             hostThreadSocket = socket;
             cnt = c;
+            this.activity = activity;
         }
 
         @Override
         public void run() {
             OutputStream outputStream;
-            String msgReply = "Hello from Android, you are #" + cnt;
+            String msgReply = "Hello from Android, you areTest #" + cnt;
 
             try {
                 outputStream = hostThreadSocket.getOutputStream();
                 PrintStream printStream = new PrintStream(outputStream);
-                printStream.print(msgReply);
-                printStream.close();
+                //printStream.print(msgReply);
+                Log.e("n", "test");
+                //printStream.close();
 
-                message += "replayed: " + msgReply + "\n";
-
+                //message += "replayed: " + msgReply + "\n";
+                /*
                 MultiplayerActivity.this.runOnUiThread(new Runnable() {
 
                     @Override
@@ -128,13 +142,17 @@ public class MultiplayerActivity  extends Activity {
                         msg.setText(message);
                     }
                 });
-
+*/
+                while(true) {
+                    printStream.print(spm.getBallX());
+                    Log.e("n", "" + spm.getBallX());
+                }
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 message += "Something wrong! " + e.toString() + "\n";
             }
-
+/*
             MultiplayerActivity.this.runOnUiThread(new Runnable() {
 
                 @Override
@@ -142,6 +160,7 @@ public class MultiplayerActivity  extends Activity {
                     msg.setText(message);
                 }
             });
+            */
         }
 
     }
