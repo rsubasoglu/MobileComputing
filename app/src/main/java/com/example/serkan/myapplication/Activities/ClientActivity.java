@@ -16,6 +16,8 @@ import com.example.serkan.myapplication.Views.MultiPlayerView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -87,14 +89,18 @@ public class ClientActivity extends Activity{
             try {
                 socket = new Socket(dstAddress, dstPort);
 
-                ByteArrayOutputStream byteArrayOutputStream =
-                        new ByteArrayOutputStream(1024);
+                // receive
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
                 byte[] buffer = new byte[1024];
+
+                // send
+                OutputStream outputStream = socket.getOutputStream();
+                PrintStream printStream = new PrintStream(outputStream);
 
                 int bytesRead;
                 while(true) {
                     InputStream inputStream = socket.getInputStream();
-                    Log.e("n", "hier");
+                    Log.e("n", "erster while");
     /*
      * notice:
      * inputStream.read() will block if no data return
@@ -105,15 +111,20 @@ public class ClientActivity extends Activity{
                     while ((bytesRead = inputStream.read(buffer)) != -1) {
                         byteArrayOutputStream.write(buffer, 0, bytesRead);
                         response += byteArrayOutputStream.toString("UTF-8");
+                        Log.e("n", "zweiter while -" + response);
                         zaehler++;
                         if (zaehler == 3) {
                             String temp = response.substring(0, 3);
                             zahl = Integer.valueOf(temp);
-                            Log.e("n", "" + zahl);
+                            Log.e("n", "if -" + zahl);
                             multiPlayerView.setRemoteBallX(zahl);
                             zaehler = 0;
                             response = "";
                             zahl = 0;
+                            printStream.print("123");
+                            printStream.print("456");
+                            printStream.print("789");
+                            break;
                         }
                     }
                 }
