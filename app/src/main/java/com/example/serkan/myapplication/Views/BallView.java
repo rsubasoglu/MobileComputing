@@ -19,27 +19,29 @@ public class BallView extends View {
     long startTime;
     long elapsedTime = 0;
 
-    Paint paint = new Paint();
+    private Paint paint = new Paint();
     AccelerometerSensor accSensor;
 
     // display coord. & balk size
-    int MAX_X = 1080;
-    int MAX_Y = 1920;
+    private int MAX_X = 1080;
+    private int MAX_Y = 1920;
 
     // ball
-    Ball ball;
+    private Ball ball;
 
     // game variables
-    boolean gameOver = true;
+    private boolean gameOver = true;
 
-    public BallView(Context context, Object sensorService) {
+    public BallView(Context context, Object sensorService, Paint paint) {
         super(context);
         if(sensorService != null) {
             accSensor = new AccelerometerSensor(sensorService);
             gameOver = false;
         }
         // create ball
-        ball = new Ball(MAX_X/2, 1500, 50);
+        this.ball = new Ball(MAX_X/2, 1500, 50);
+
+        this.paint = paint;
 
         // start the animation
         this.startTime = System.currentTimeMillis();
@@ -73,13 +75,12 @@ public class BallView extends View {
             sensorXPercent = 0;
         // calculate the percent number in display coord.
         int coordX = (int)(sensorXPercent * MAX_X / 100);
-        canvas.drawText(String.valueOf(coordX), MAX_X / 2, MAX_Y / 2, paint);
+        //canvas.drawText(String.valueOf(coordX), MAX_X / 2, MAX_Y / 2, paint);
         //if((ball.getX() - coordX) > 10 || (coordX - ball.getX()) > 10)
         ball.setX(coordX);
     }
 
     public void drawBall(Canvas canvas) {
-        paint.setColor(Color.BLUE);
         canvas.drawCircle(ball.getX(), ball.getY(), ball.getR(), paint);
     }
 

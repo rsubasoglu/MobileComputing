@@ -3,6 +3,7 @@ package com.example.serkan.myapplication.Logic;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -22,7 +23,7 @@ public class SinglePlayerMode {
     public SinglePlayerMode(Activity activity, Object sensorService) {
         this.activity = activity;
 
-        ballView = new BallView(activity, sensorService);
+        ballView = new BallView(activity, sensorService, new Paint());
         balkView = new BalkView(activity);
 
         FrameLayout fl = new FrameLayout(activity);

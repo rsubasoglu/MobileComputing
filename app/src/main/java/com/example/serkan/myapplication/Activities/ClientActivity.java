@@ -13,11 +13,14 @@ import android.widget.TextView;
 import com.example.serkan.myapplication.R;
 import com.example.serkan.myapplication.Views.MultiPlayerView;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -109,12 +112,12 @@ public class ClientActivity extends Activity{
                     int zahl = 0;
                     int zaehler = 0;
 
+                /*
                     while (true) {
                         if(ok) {
                             OutputStream outputStream = socket.getOutputStream();
-                            outputStream.write();
                             PrintStream printStream = new PrintStream(outputStream);
-                            printStream.print("123");
+                            printStream.print(zahl);
                             ok = false;
                             Log.e("n", "erste if");
                             outputStream.flush();
@@ -137,7 +140,23 @@ public class ClientActivity extends Activity{
                             }
                         }
                     }
+                    */
                 //}
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+                while (true) {
+                    if(ok) {
+                        out.println(multiPlayerView.getLocalBallX());
+                        ok = false;
+                    }
+                    else {
+                        response = in.readLine();
+                        zahl = Integer.valueOf(response);
+                        ok = true;
+                        multiPlayerView.setRemoteBallX(zahl);
+                    }
+                }
 
             } catch (UnknownHostException e) {
                 // TODO Auto-generated catch block

@@ -8,13 +8,17 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.serkan.myapplication.R;
+import com.example.serkan.myapplication.Views.MultiPlayerView;
 import com.example.serkan.myapplication.Views.SinglePlayerView;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -32,7 +36,7 @@ public class MultiplayerActivity  extends Activity {
     TextView info, infoip, msg;
     String message = "";
     ServerSocket serverSocket;
-    SinglePlayerView spm;
+    MultiPlayerView mpv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,7 @@ public class MultiplayerActivity  extends Activity {
         socketServerThread.start();
 
         Object sensorService = getSystemService(Context.SENSOR_SERVICE);
-        spm = new SinglePlayerView(this, this, sensorService);
+        mpv = new MultiPlayerView(this, this, sensorService);
     }
 
     @Override
@@ -160,6 +164,7 @@ public class MultiplayerActivity  extends Activity {
                 String response = "";
                 boolean ok = true;
 
+                /*
                 while (true) {
                     if (ok) {
                         outputStream = hostThreadSocket.getOutputStream();
@@ -186,6 +191,25 @@ public class MultiplayerActivity  extends Activity {
                     }
                     //Log.e("n", "" + spm.getBallX());
                 }
+                */
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(hostThreadSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(hostThreadSocket.getOutputStream(), true);
+
+                while (true) {
+                    if (ok) {
+                        out.println(mpv.getLocalBallX());
+                        ok = false;
+                    }
+                    else {
+                        response = in.readLine();
+                        zahl = Integer.valueOf(response);
+                        mpv.setRemoteBallX(zahl);
+                        ok = true;
+                    }
+                    //Log.e("n", "" + spm.getBallX());
+                }
+
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

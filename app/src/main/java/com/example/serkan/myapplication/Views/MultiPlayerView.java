@@ -3,6 +3,8 @@ package com.example.serkan.myapplication.Views;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -37,8 +39,13 @@ public class MultiPlayerView extends View {
         super(context);
         this.activity = activity;
 
-        ballView = new BallView(activity, sensorService);
-        ballView2 = new BallView(activity, null);
+        Paint paint = new Paint();
+        paint.setColor(Color.BLUE);
+        ballView = new BallView(activity, sensorService, paint);
+
+        Paint paint2 = new Paint();
+        paint2.setColor(Color.GRAY);
+        ballView2 = new BallView(activity, null, paint2);
         balkView = new BalkView(activity);
 
         FrameLayout fl = new FrameLayout(activity);
@@ -83,5 +90,9 @@ public class MultiPlayerView extends View {
 
     public void setRemoteBallX(int x) {
         this.remoteBallX = x;
+    }
+
+    public int getLocalBallX() {
+        return ballView.getBallX();
     }
 }
