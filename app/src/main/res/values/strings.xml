@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Main</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_sek">Zweite Activity</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_game">Game</string>
+    <string name="title_activity_ranking">Ranking</string>
+    <string name="title_activity_sensor">Sensor</string>
+    <string name="title_activity_multiplayer">Multiplayer</string>
+    <string name="title_activity_client">Client</string>
+</resources>
