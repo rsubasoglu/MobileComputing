@@ -50,7 +50,7 @@ public class BalkView extends View {
     public void onDraw(Canvas canvas) {
         drawBalks(canvas);
         if(elapsedTime > animationDuration && !gameOver) {
-            addNewBalk();
+
             elapsedTime = 0;
         }
         elapsedTime++;
@@ -62,11 +62,22 @@ public class BalkView extends View {
         return r.nextInt((MAX_X - BALK_X));
     }
 
-    public void addNewBalk() {
+    public int addNewRandomBalk() {
         for(int i = 0; i < balks.length; i++) {
             if(balks[i].getY() > MAX_Y) {
                 int randomX = randomBalkPositionX();
                 Balk b = new Balk(randomX, 0);
+                balks[i] = b;
+                return b.getX();
+            }
+        }
+        return 0;
+    }
+
+    public void addNewBalk(int x) {
+        for(int i = 0; i < balks.length; i++) {
+            if(balks[i].getY() > MAX_Y) {
+                Balk b = new Balk(x, 0);
                 balks[i] = b;
                 break;
             }

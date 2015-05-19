@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,8 @@ public class ClientActivity extends Activity{
 
     MultiPlayerView multiPlayerView;
 
+    private PowerManager.WakeLock wakeLock;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,10 @@ public class ClientActivity extends Activity{
         buttonClear = (Button)findViewById(R.id.clear);
         textResponse = (TextView)findViewById(R.id.response);
 
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "");
+        wakeLock.acquire();
+
         buttonConnect.setOnClickListener(buttonConnectOnClickListener);
 
         buttonClear.setOnClickListener(new View.OnClickListener(){
@@ -56,6 +63,12 @@ public class ClientActivity extends Activity{
             public void onClick(View v) {
                 textResponse.setText("");
             }});
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        wakeLock.release();
     }
 
     View.OnClickListener buttonConnectOnClickListener =
@@ -68,7 +81,7 @@ public class ClientActivity extends Activity{
                             Integer.parseInt(editTextPort.getText().toString()));
                     myClientTask.execute();
                     Object sensorService = getSystemService(Context.SENSOR_SERVICE);
-                    multiPlayerView = new MultiPlayerView(activity, activity, sensorService);
+                    multiPlayerView = new MultiPlayerView(activity, activity, sensorService, false);
                 }};
 
     public class MyClientTask extends AsyncTask<Void, Void, Void> {
@@ -152,6 +165,12 @@ public class ClientActivity extends Activity{
                     }
                     else {
                         response = in.readLine();
+                        if(response.equals("newBalk")) {
+                            response = in.readLine();
+                            zahl = Integer.valueOf(response);
+                            multiPlayerView.setLocalNewBalkPosX(zahl);
+                            response = in.readLine();
+                        }
                         zahl = Integer.valueOf(response);
                         ok = true;
                         multiPlayerView.setRemoteBallX(zahl);

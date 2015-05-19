@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -38,6 +39,8 @@ public class MultiplayerActivity  extends Activity {
     ServerSocket serverSocket;
     MultiPlayerView mpv;
 
+    private PowerManager.WakeLock wakeLock;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +51,15 @@ public class MultiplayerActivity  extends Activity {
 
         infoip.setText(getIpAddress());
 
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "");
+        wakeLock.acquire();
+
         Thread socketServerThread = new Thread(new SocketServerThread(this));
         socketServerThread.start();
 
         Object sensorService = getSystemService(Context.SENSOR_SERVICE);
-        mpv = new MultiPlayerView(this, this, sensorService);
+        mpv = new MultiPlayerView(this, this, sensorService, true);
     }
 
     @Override
@@ -67,6 +74,7 @@ public class MultiplayerActivity  extends Activity {
                 e.printStackTrace();
             }
         }
+        wakeLock.release();
     }
 
     private class SocketServerThread extends Thread {
@@ -198,6 +206,10 @@ public class MultiplayerActivity  extends Activity {
 
                 while (true) {
                     if (ok) {
+                        if(mpv.isNewBalkAdded()) {
+                            out.println("newBalk");
+                            out.println(mpv.getNewBalkPosX());
+                        }
                         out.println(mpv.getLocalBallX());
                         ok = false;
                     }
