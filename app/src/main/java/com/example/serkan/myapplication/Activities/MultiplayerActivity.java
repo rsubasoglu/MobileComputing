@@ -134,8 +134,8 @@ public class MultiplayerActivity  extends Activity {
 
             try {
                 // send
-                outputStream = hostThreadSocket.getOutputStream();
-                PrintStream printStream = new PrintStream(outputStream);
+                //outputStream = hostThreadSocket.getOutputStream();
+                //PrintStream printStream = new PrintStream(outputStream);
                 //printStream.print(msgReply);
                 Log.e("n", "test");
                 //printStream.close();
@@ -162,24 +162,25 @@ public class MultiplayerActivity  extends Activity {
 
                 while (true) {
                     if (ok) {
-                        printStream.print(spm.getBallX());
-                        printStream.print(spm.getBallX());
+                        outputStream = hostThreadSocket.getOutputStream();
+                        PrintStream printStream = new PrintStream(outputStream);
                         printStream.print(spm.getBallX());
                         ok = false;
-                        Log.e("n", "erste if");
+                        Log.e("n", "erste if -" + spm.getBallX());
+                        outputStream.flush();
                     }
-                    InputStream inputStream = hostThreadSocket.getInputStream();
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        byteArrayOutputStream.write(buffer, 0, bytesRead);
-                        response += byteArrayOutputStream.toString("UTF-8");
-                        zaehler++;
-                        if (zaehler == 3) {
+                    else {
+                        Log.e("n", "else if");
+                        InputStream inputStream = hostThreadSocket.getInputStream();
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            byteArrayOutputStream.write(buffer, 0, bytesRead);
+                            response = byteArrayOutputStream.toString("UTF-8");
                             String temp = response.substring(0, 3);
                             zahl = Integer.valueOf(temp);
-                            Log.e("n", "zweite if -" + zahl);
-                            zaehler = 0;
+                            Log.e("n", "while -" + zahl);
                             response = "";
                             ok = true;
+                            //hostThreadSocket.shutdownInput();
                             break;
                         }
                     }
