@@ -2,7 +2,6 @@ package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
@@ -10,23 +9,18 @@ import android.widget.TextView;
 
 import com.example.serkan.myapplication.R;
 import com.example.serkan.myapplication.Views.MultiPlayerView;
-import com.example.serkan.myapplication.Views.SinglePlayerView;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 /**
