@@ -3,15 +3,19 @@ package com.example.serkan.myapplication.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.example.serkan.myapplication.R;
-import com.example.serkan.myapplication.Views.SinglePlayerView;
+import com.example.serkan.myapplication.Views.MultiPlayerView;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
@@ -27,7 +31,9 @@ public class MultiplayerActivity  extends Activity {
     TextView info, infoip, msg;
     String message = "";
     ServerSocket serverSocket;
-    SinglePlayerView spm;
+    MultiPlayerView mpv;
+
+    private PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +45,15 @@ public class MultiplayerActivity  extends Activity {
 
         infoip.setText(getIpAddress());
 
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "");
+        wakeLock.acquire();
+
         Thread socketServerThread = new Thread(new SocketServerThread(this));
         socketServerThread.start();
 
         Object sensorService = getSystemService(Context.SENSOR_SERVICE);
-        spm = new SinglePlayerView(this, this, sensorService);
+        mpv = new MultiPlayerView(this, this, sensorService, true);
     }
 
     @Override
@@ -58,6 +68,7 @@ public class MultiplayerActivity  extends Activity {
                 e.printStackTrace();
             }
         }
+        wakeLock.release();
     }
 
     private class SocketServerThread extends Thread {
@@ -86,6 +97,7 @@ public class MultiplayerActivity  extends Activity {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     count++;
+                    Log.e("n", "" + socket.getRemoteSocketAddress());
                     message += "#" + count + " from " + socket.getInetAddress()
                             + ":" + socket.getPort() + "\n";
 
@@ -127,11 +139,16 @@ public class MultiplayerActivity  extends Activity {
             String msgReply = "Hello from Android, you areTest #" + cnt;
 
             try {
-                outputStream = hostThreadSocket.getOutputStream();
-                PrintStream printStream = new PrintStream(outputStream);
+                // send
+                //outputStream = hostThreadSocket.getOutputStream();
+                //PrintStream printStream = new PrintStream(outputStream);
                 //printStream.print(msgReply);
                 Log.e("n", "test");
                 //printStream.close();
+
+                // receive
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
+                byte[] buffer = new byte[1024];
 
                 //message += "replayed: " + msgReply + "\n";
                 /*
@@ -143,15 +160,69 @@ public class MultiplayerActivity  extends Activity {
                     }
                 });
 */
-                while(true) {
-                    printStream.print(spm.getBallX());
-                    Log.e("n", "" + spm.getBallX());
+                int bytesRead = 0;
+                int zaehler = 0;
+                int zahl = 0;
+                String response = "";
+                boolean ok = true;
+
+                /*
+                while (true) {
+                    if (ok) {
+                        outputStream = hostThreadSocket.getOutputStream();
+                        PrintStream printStream = new PrintStream(outputStream);
+                        printStream.print(spm.getBallX());
+                        ok = false;
+                        Log.e("n", "erste if -" + spm.getBallX());
+                        outputStream.flush();
+                    }
+                    else {
+                        Log.e("n", "else if");
+                        InputStream inputStream = hostThreadSocket.getInputStream();
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            byteArrayOutputStream.write(buffer, 0, bytesRead);
+                            response = byteArrayOutputStream.toString("UTF-8");
+                            String temp = response.substring(0, 3);
+                            zahl = Integer.valueOf(temp);
+                            Log.e("n", "while -" + zahl);
+                            response = "";
+                            ok = true;
+                            //hostThreadSocket.shutdownInput();
+                            break;
+                        }
+                    }
+                    //Log.e("n", "" + spm.getBallX());
                 }
+                */
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(hostThreadSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(hostThreadSocket.getOutputStream(), true);
+
+                while (true) {
+                    if (ok) {
+                        if(mpv.isNewBalkAdded()) {
+                            out.println("newBalk");
+                            out.println(mpv.getNewBalkPosX());
+                        }
+                        out.println(mpv.getLocalBallX());
+                        ok = false;
+                    }
+                    else {
+                        response = in.readLine();
+                        zahl = Integer.valueOf(response);
+                        mpv.setRemoteBallX(zahl);
+                        ok = true;
+                    }
+                    //Log.e("n", "" + spm.getBallX());
+                }
+
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 message += "Something wrong! " + e.toString() + "\n";
             }
+        }
+    }
 /*
             MultiplayerActivity.this.runOnUiThread(new Runnable() {
 
@@ -161,9 +232,6 @@ public class MultiplayerActivity  extends Activity {
                 }
             });
             */
-        }
-
-    }
 
     private String getIpAddress() {
         String ip = "";
@@ -195,4 +263,5 @@ public class MultiplayerActivity  extends Activity {
 
         return ip;
     }
+
 }

@@ -3,6 +3,8 @@ package com.example.serkan.myapplication.Views;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -35,7 +37,9 @@ public class SinglePlayerView extends View{
         super(context);
         this.activity = activity;
 
-        ballView = new BallView(activity, sensorService);
+        Paint paint = new Paint();
+        paint.setColor(Color.BLUE);
+        ballView = new BallView(activity, sensorService, paint);
         balkView = new BalkView(activity);
 
         FrameLayout fl = new FrameLayout(activity);

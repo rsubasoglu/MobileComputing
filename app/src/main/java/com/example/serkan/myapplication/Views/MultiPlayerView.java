@@ -3,6 +3,8 @@ package com.example.serkan.myapplication.Views;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -18,11 +20,15 @@ public class MultiPlayerView extends View {
 
     Activity activity;
 
+    private boolean isServer;
+    private boolean isNewBalkAdded = false;
+
     // display coord. & balk size
     int MAX_X = 1080;
     int MAX_Y = 1920;
     int BALK_X = 300;
     int BALK_Y = 100;
+    int newBalkPosX = 0;
 
     // views
     BallView ballView;
@@ -33,12 +39,18 @@ public class MultiPlayerView extends View {
     boolean gameOver = false;
     int remoteBallX = 0;
 
-    public MultiPlayerView(Context context, Activity activity, Object sensorService) {
+    public MultiPlayerView(Context context, Activity activity, Object sensorService, boolean isServer) {
         super(context);
         this.activity = activity;
+        this.isServer = isServer;
 
-        ballView = new BallView(activity, sensorService);
-        ballView2 = new BallView(activity, null);
+        Paint paint = new Paint();
+        paint.setColor(Color.BLUE);
+        ballView = new BallView(activity, sensorService, paint);
+
+        Paint paint2 = new Paint();
+        paint2.setColor(Color.GRAY);
+        ballView2 = new BallView(activity, null, paint2);
         balkView = new BalkView(activity);
 
         FrameLayout fl = new FrameLayout(activity);
@@ -63,7 +75,10 @@ public class MultiPlayerView extends View {
         ballView2.setRemoteBall(remoteBallX);
 
         if(elapsedTime > animationDuration && !gameOver) {
-
+            if(isServer) {
+                newBalkPosX = balkView.addNewRandomBalk();
+                isNewBalkAdded = true;
+            }
             elapsedTime = 0;
         }
         elapsedTime++;
@@ -83,5 +98,22 @@ public class MultiPlayerView extends View {
 
     public void setRemoteBallX(int x) {
         this.remoteBallX = x;
+    }
+
+    public int getLocalBallX() {
+        return ballView.getBallX();
+    }
+
+    public boolean isNewBalkAdded() {
+        return isNewBalkAdded;
+    }
+
+    public int getNewBalkPosX() {
+        isNewBalkAdded = false;
+        return newBalkPosX;
+    }
+
+    public void setLocalNewBalkPosX(int x) {
+        balkView.addNewBalk(x);
     }
 }
