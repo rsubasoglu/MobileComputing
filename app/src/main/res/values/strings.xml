@@ -10,4 +10,5 @@
     <string name="title_activity_sensor">Sensor</string>
     <string name="title_activity_multiplayer">Multiplayer</string>
     <string name="title_activity_client">Client</string>
+    <string name="title_activity_bluetooth">Bluetooth</string>
 </resources>
