@@ -39,7 +39,7 @@ public class BluetoothActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
 
-        mArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_textview, )
+        mArrayAdapter = new ArrayAdapter<String>(this, R.layout.simple_textview);
 
         mListView = (ListView) findViewById(R.id.listView);
 
@@ -49,8 +49,8 @@ public class BluetoothActivity extends Activity {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
-            getPairedDevices();
-            //getDiscoveringDevices();
+            //getPairedDevices();
+            getDiscoveringDevices();
         }
 
     }

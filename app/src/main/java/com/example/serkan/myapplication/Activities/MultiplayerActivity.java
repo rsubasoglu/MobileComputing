@@ -139,61 +139,9 @@ public class MultiplayerActivity  extends Activity {
             String msgReply = "Hello from Android, you areTest #" + cnt;
 
             try {
-                // send
-                //outputStream = hostThreadSocket.getOutputStream();
-                //PrintStream printStream = new PrintStream(outputStream);
-                //printStream.print(msgReply);
-                Log.e("n", "test");
-                //printStream.close();
-
-                // receive
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
-                byte[] buffer = new byte[1024];
-
-                //message += "replayed: " + msgReply + "\n";
-                /*
-                MultiplayerActivity.this.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        msg.setText(message);
-                    }
-                });
-*/
-                int bytesRead = 0;
-                int zaehler = 0;
                 int zahl = 0;
                 String response = "";
                 boolean ok = true;
-
-                /*
-                while (true) {
-                    if (ok) {
-                        outputStream = hostThreadSocket.getOutputStream();
-                        PrintStream printStream = new PrintStream(outputStream);
-                        printStream.print(spm.getBallX());
-                        ok = false;
-                        Log.e("n", "erste if -" + spm.getBallX());
-                        outputStream.flush();
-                    }
-                    else {
-                        Log.e("n", "else if");
-                        InputStream inputStream = hostThreadSocket.getInputStream();
-                        while ((bytesRead = inputStream.read(buffer)) != -1) {
-                            byteArrayOutputStream.write(buffer, 0, bytesRead);
-                            response = byteArrayOutputStream.toString("UTF-8");
-                            String temp = response.substring(0, 3);
-                            zahl = Integer.valueOf(temp);
-                            Log.e("n", "while -" + zahl);
-                            response = "";
-                            ok = true;
-                            //hostThreadSocket.shutdownInput();
-                            break;
-                        }
-                    }
-                    //Log.e("n", "" + spm.getBallX());
-                }
-                */
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(hostThreadSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(hostThreadSocket.getOutputStream(), true);

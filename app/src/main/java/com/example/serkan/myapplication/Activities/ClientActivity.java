@@ -86,12 +86,10 @@ public class ClientActivity extends Activity{
         String dstAddress;
         int dstPort;
         String response = "";
-        Activity activity;
 
         MyClientTask(String addr, int port){
             dstAddress = addr;
             dstPort = port;
-            this.activity = activity;
         }
 
         @Override
@@ -102,56 +100,13 @@ public class ClientActivity extends Activity{
             try {
                 socket = new Socket(dstAddress, dstPort);
 
-                // receive
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
-                byte[] buffer = new byte[1024];
-
-                // send
-                //OutputStream outputStream = socket.getOutputStream();
-                //PrintStream printStream = new PrintStream(outputStream);
-
-                int bytesRead;
-                //while(true) {
-                //    InputStream inputStream = socket.getInputStream();
-                //    Log.e("n", "erster while");
     /*
      * notice:
      * inputStream.read() will block if no data return
      */
-                    boolean ok = false;
-                    int zahl = 0;
-                    int zaehler = 0;
+                boolean ok = false;
+                int zahl = 0;
 
-                /*
-                    while (true) {
-                        if(ok) {
-                            OutputStream outputStream = socket.getOutputStream();
-                            PrintStream printStream = new PrintStream(outputStream);
-                            printStream.print(zahl);
-                            ok = false;
-                            Log.e("n", "erste if");
-                            outputStream.flush();
-                        }
-                        else {
-                            Log.e("n", "else if");
-                            InputStream inputStream = socket.getInputStream();
-                            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                byteArrayOutputStream.write(buffer, 0, bytesRead);
-                                response = byteArrayOutputStream.toString("UTF-8");
-                                String temp = response.substring(0, 3);
-                                zahl = Integer.valueOf(temp);
-                                Log.e("n", "while -" + zahl);
-                                response = "";
-                                ok = true;
-                                //socket.shutdownInput();
-
-                                multiPlayerView.setRemoteBallX(zahl);
-                                break;
-                            }
-                        }
-                    }
-                    */
-                //}
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 

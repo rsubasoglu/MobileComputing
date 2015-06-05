@@ -23,9 +23,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // Zuweisung der XML Objekte an unsere Variabeln
-        inputVorname = (EditText) findViewById(R.id.Vorname);
-        inputNachname = (EditText) findViewById(R.id.Nachname);
-        Button weiterButton = (Button) findViewById(R.id.submitButton);
         Button settingsButton = (Button) findViewById(R.id.settingsButton);
         Button gameButton = (Button) findViewById(R.id.gameButton);
         Button rankingButton = (Button) findViewById(R.id.rankingButton);
@@ -33,26 +30,6 @@ public class MainActivity extends Activity {
         Button multiplayerButton = (Button) findViewById(R.id.multiplayerButton);
         Button clientButton = (Button) findViewById(R.id.clientButton);
         Button bluetoothButton = (Button) findViewById(R.id.bluetoothButton);
-
-        // ClickListener implementieren für den Button zum Wechsel der Activity
-        weiterButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-                //Neues Intent anlegen
-                Intent nextScreen = new Intent(getApplicationContext(), SekActivity.class);
-
-                //Intent mit den Daten füllen
-                nextScreen.putExtra("Vorname", inputVorname.getText().toString());
-                nextScreen.putExtra("Nachname", inputNachname.getText().toString());
-
-                // Log schreiben für Logausgabe
-                Log.e("n", inputVorname.getText()+"."+ inputNachname.getText());
-
-                // Intent starten und zur zweiten Activity wechseln
-                startActivity(nextScreen);
-
-            }
-        });
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
 
