@@ -13,14 +13,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.serkan.myapplication.R;
 
 import java.io.IOException;
 import java.util.Set;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 /**
  * Created on 21.05.2015.
@@ -49,8 +47,10 @@ public class BluetoothActivity extends Activity {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
+
             //getPairedDevices();
-            getDiscoveringDevices();
+            if(mBluetoothAdapter.startDiscovery())
+                getDiscoveringDevices();
         }
 
     }
@@ -80,7 +80,10 @@ public class BluetoothActivity extends Activity {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     // Add the name and address to an array adapter to show in a ListView
                     mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                    mArrayAdapter.add("device found");
                     Log.e("n", device.getName());
+                }else {
+                    mArrayAdapter.add("no device found");
                 }
             }
         };
