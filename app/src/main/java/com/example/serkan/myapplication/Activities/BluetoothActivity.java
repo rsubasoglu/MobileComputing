@@ -57,27 +57,38 @@ public class BluetoothActivity extends Activity {
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
 
-            //getPairedDevices();
+            getPairedDevices();
             if(mBluetoothAdapter.startDiscovery())
-                getPairedDevices();
                 getDiscoveringDevices();
         }
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                String str = mListView.getItemAtPosition(position).toString();
-                str = str.substring(str.indexOf('\n')+1, str.indexOf("device")-1);
-                Log.e("n", str);
 
-                Iterator<BluetoothDevice> iterator = mBluetoothAdapter.getBondedDevices().iterator();
-                while (iterator.hasNext()) {
-                    BluetoothDevice selectedDevice = iterator.next();
-                    Log.e("n", selectedDevice.getAddress());
-                    if(selectedDevice.getAddress().equals(str)) {
-                        Log.e("n", "yeeees");
-                        BluetoothConnection bluetoothConnection = new BluetoothConnection(selectedDevice);
+                //Lese vom geklickten Gerät den Namen + die ID
+                String str = mListView.getItemAtPosition(position).toString();
+
+                //Speichere nur die ID
+                String klickedDeviceID = str.substring(str.indexOf('\n')+1, str.indexOf("device")-1);
+                String klickedDeviceTyp = str.substring(str.indexOf("device")+7, str.length());
+                Log.e("klicked device typ", klickedDeviceTyp);
+                Log.e("klicked device id", klickedDeviceID);
+
+                if(klickedDeviceTyp == "paired") {
+                    /* HIER WERDEN NUR DIE GEKOPPELTEN GERÄTE EINGELESEN UND GEPRÜFT */
+                    Iterator<BluetoothDevice> iterator = mBluetoothAdapter.getBondedDevices().iterator();
+
+                    while (iterator.hasNext()) {
+                        BluetoothDevice selectedDevice = iterator.next();
+
+                        if (selectedDevice.getAddress().equals(klickedDeviceID)) {
+                            Log.e("n", "adressess equal");
+                            BluetoothConnection bluetoothConnection = new BluetoothConnection(selectedDevice);
+                        }
                     }
+                } else if (klickedDeviceTyp == "found") {
+                    /* die IDs von gefundenen Geräten muss hier zur Überprüfung mit dem geklickten Gerät präsent sein */
                 }
             }
         });
@@ -123,7 +134,7 @@ public class BluetoothActivity extends Activity {
             for (BluetoothDevice device : pairedDevices) {
                 // Add the name and address to an array adapter to show in a ListView
                 mArrayAdapter.add(device.getName() + "\n" + device.getAddress() + "\n" + "device paired");
-                Log.e("n", device.getName());
+                Log.e("paired device name", device.getName());
             }
         }
         mListView.setAdapter(mArrayAdapter);
@@ -140,7 +151,7 @@ public class BluetoothActivity extends Activity {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     // Add the name and address to an array adapter to show in a ListView
                     mArrayAdapter.add(device.getName() + "\n" + device.getAddress() + "\n" + "device found");
-                    Log.e("n", device.getName());
+                    Log.e("discovered device name", device.getName());
                 }else {
                     mArrayAdapter.add("no device found");
                 }
