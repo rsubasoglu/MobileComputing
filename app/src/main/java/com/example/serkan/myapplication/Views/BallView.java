@@ -20,6 +20,7 @@ public class BallView extends View {
     long elapsedTime = 0;
 
     private Paint paint = new Paint();
+    // sensor variable
     AccelerometerSensor accSensor;
 
     // display coord. & balk size
@@ -50,19 +51,20 @@ public class BallView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        // wenn spiel nicht beendet
         if(!gameOver) {
+            // position des balls aktualisieren
             updateBallPosition(canvas);
         }
+        // zeichnet den ball
         drawBall(canvas);
-
-        if(elapsedTime > animationDuration && !gameOver) {
-
-            elapsedTime = 0;
-        }
-        elapsedTime++;
         this.postInvalidateDelayed(1000 / framesPerSecond);
     }
 
+    /**
+     * aktualisiert die position des balls
+     * @param canvas
+     */
     public void updateBallPosition(Canvas canvas) {
         // parameter x from accSensor:
         // 80 = left, 0 = center, -80 = right
@@ -75,31 +77,54 @@ public class BallView extends View {
             sensorXPercent = 0;
         // calculate the percent number in display coord.
         int coordX = (int)(sensorXPercent * MAX_X / 100);
-        //canvas.drawText(String.valueOf(coordX), MAX_X / 2, MAX_Y / 2, paint);
-        //if((ball.getX() - coordX) > 10 || (coordX - ball.getX()) > 10)
+        // set ball position
         ball.setX(coordX);
     }
 
+    /**
+     * zeichnet den ball
+     * @param canvas
+     */
     public void drawBall(Canvas canvas) {
         canvas.drawCircle(ball.getX(), ball.getY(), ball.getR(), paint);
     }
 
+    /**
+     * gibt die x position vom ball
+     * @return position des balls
+     */
     public int getBallX() {
         return ball.getX();
     }
 
+    /**
+     * gibt die y position vom ball
+     * @return position des balls
+     */
     public int getBallY() {
         return ball.getY();
     }
 
+    /**
+     * gibt den radius vom ball
+     * @return raduis des balls
+     */
     public float getBallR() {
         return ball.getR();
     }
 
+    /**
+     * spiel verloren
+     * @param gameOver
+     */
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
 
+    /**
+     * aktualisiert die position des remote balls
+     * @param x
+     */
     public void setRemoteBall(int x) {
         ball.setX(x);
     }

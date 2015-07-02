@@ -67,7 +67,7 @@ public class BluetoothActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-                //Lese vom geklickten Gerät den Namen + die ID
+                //Lese vom geklickten Gerat den Namen + die ID
                 String str = mListView.getItemAtPosition(position).toString();
 
                 //Speichere nur die ID
@@ -77,7 +77,7 @@ public class BluetoothActivity extends Activity {
                 Log.e("klicked device id", klickedDeviceID);
 
                 if(klickedDeviceTyp == "paired") {
-                    /* HIER WERDEN NUR DIE GEKOPPELTEN GERÄTE EINGELESEN UND GEPRÜFT */
+                    /* HIER WERDEN NUR DIE GEKOPPELTEN GERATE EINGELESEN UND GEPRUFT */
                     Iterator<BluetoothDevice> iterator = mBluetoothAdapter.getBondedDevices().iterator();
 
                     while (iterator.hasNext()) {
@@ -90,7 +90,7 @@ public class BluetoothActivity extends Activity {
                         }
                     }
                 } else if (klickedDeviceTyp == "found") {
-                    /* die IDs von gefundenen Geräten muss hier zur Überprüfung mit dem geklickten Gerät präsent sein */
+                    /* die IDs von gefundenen Geraten muss hier zur Uberprufung mit dem geklickten Gerat prasent sein */
                 }
             }
         });

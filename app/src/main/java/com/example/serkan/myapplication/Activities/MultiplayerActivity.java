@@ -28,31 +28,30 @@ import java.util.Enumeration;
  * quelle: http://android-er.blogspot.de/2014/02/android-sercerclient-example-server.html
  */
 public class MultiplayerActivity  extends Activity {
-    TextView info, infoip, msg;
-    String message = "";
+    // socket variable fur die verbindung
     ServerSocket serverSocket;
     MultiPlayerView mpv;
 
+    // variable furs wach bleiben
     private PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multiplayer);
-        info = (TextView) findViewById(R.id.info);
-        infoip = (TextView) findViewById(R.id.infoip);
-        msg = (TextView) findViewById(R.id.msg);
 
-        infoip.setText(getIpAddress());
-
+        // wach bleiben
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "");
         wakeLock.acquire();
 
+        // warte auf verbindungen in einem neuen thread
         Thread socketServerThread = new Thread(new SocketServerThread(this));
         socketServerThread.start();
 
+        // aktiviere den sensor
         Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+        // starte das spiel (sollte erst dann geschehen wenn verbindung aufgebaut!!!)
         mpv = new MultiPlayerView(this, this, sensorService, true);
     }
 
@@ -62,19 +61,21 @@ public class MultiplayerActivity  extends Activity {
 
         if (serverSocket != null) {
             try {
+                // verbindung beenden
                 serverSocket.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
+        // wach bleiben beenden
         wakeLock.release();
     }
 
+    // diese klasse erstellt einen socket und wartet auf verbindungen
     private class SocketServerThread extends Thread {
 
         static final int SocketServerPORT = 8080;
-        int count = 0;
         Activity activity;
 
         public SocketServerThread(Activity activity) {
@@ -84,32 +85,15 @@ public class MultiplayerActivity  extends Activity {
         @Override
         public void run() {
             try {
+                // erstellt einen socket mit festgelegtem port
                 serverSocket = new ServerSocket(SocketServerPORT);
-                MultiplayerActivity.this.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        info.setText("I'm waiting here: "
-                                + serverSocket.getLocalPort());
-                    }
-                });
 
                 while (true) {
+                    // programm wartet hier solange bis eine verbindung hergestellt wurde
                     Socket socket = serverSocket.accept();
-                    count++;
                     Log.e("n", "" + socket.getRemoteSocketAddress());
-                    message += "#" + count + " from " + socket.getInetAddress()
-                            + ":" + socket.getPort() + "\n";
 
-                    MultiplayerActivity.this.runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            msg.setText(message);
-                        }
-                    });
-
-                    SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(socket, count, activity);
+                    SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(socket, activity);
                     socketServerReplyThread.run();
 
                 }
@@ -121,66 +105,66 @@ public class MultiplayerActivity  extends Activity {
 
     }
 
+    // diese klasse sendet und epfangt daten
     private class SocketServerReplyThread extends Thread {
 
         private Socket hostThreadSocket;
-        int cnt;
         Activity activity;
 
-        SocketServerReplyThread(Socket socket, int c, Activity activity) {
+        SocketServerReplyThread(Socket socket, Activity activity) {
             hostThreadSocket = socket;
-            cnt = c;
             this.activity = activity;
         }
 
         @Override
         public void run() {
-            OutputStream outputStream;
-            String msgReply = "Hello from Android, you areTest #" + cnt;
 
             try {
-                int zahl = 0;
-                String response = "";
+                // variable fur empfangene daten
+                int zahl;
+                String response;
+                // wenn daten empfangen
                 boolean ok = true;
 
+                // variablen fur senden und empfangen
                 BufferedReader in = new BufferedReader(new InputStreamReader(hostThreadSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(hostThreadSocket.getOutputStream(), true);
 
+                // loop fur das kontinuierliche senden & empfangen
                 while (true) {
+                    // wenn daten empfangen
                     if (ok) {
+                        // wenn ein neues balken generiert wurde
                         if(mpv.isNewBalkAdded()) {
+                            // sende info das ein neues balken gesendet wird
                             out.println("newBalk");
+                            // sende balken
                             out.println(mpv.getNewBalkPosX());
                         }
+                        // sende koordinaten vom localen ball
                         out.println(mpv.getLocalBallX());
                         ok = false;
                     }
                     else {
+                        // lese daten
                         response = in.readLine();
+                        // umwandlung von string zu int
                         zahl = Integer.valueOf(response);
+                        // setze remote ball position
                         mpv.setRemoteBallX(zahl);
                         ok = true;
                     }
-                    //Log.e("n", "" + spm.getBallX());
                 }
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                message += "Something wrong! " + e.toString() + "\n";
+                Log.e("e" ,"Something wrong! " + e.toString() + "\n");
             }
         }
     }
-/*
-            MultiplayerActivity.this.runOnUiThread(new Runnable() {
 
-                @Override
-                public void run() {
-                    msg.setText(message);
-                }
-            });
-            */
-
+    /*
     private String getIpAddress() {
         String ip = "";
         try {
@@ -211,5 +195,6 @@ public class MultiplayerActivity  extends Activity {
 
         return ip;
     }
+    */
 
 }

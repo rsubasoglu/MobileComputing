@@ -4,27 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Vorname: "/>
-    <EditText android:id="@+id/Vorname"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"/>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Nachname: "
-        />
-    <EditText android:id="@+id/Nachname"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"/>
-    <Button android:id="@+id/submitButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Weiter"
-        android:layout_marginTop="15dip"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -40,12 +19,6 @@
         android:id="@+id/gameButton"
         android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ranking"
-        android:id="@+id/rankingButton"
-        android:layout_gravity="center_horizontal" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

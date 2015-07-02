@@ -20,7 +20,9 @@ public class MultiPlayerView extends View {
 
     Activity activity;
 
+    // wurde die MultiPlayerView als server oder client gestartet
     private boolean isServer;
+    // wurde ein neues balken erstellt
     private boolean isNewBalkAdded = false;
 
     // display coord. & balk size
@@ -71,12 +73,17 @@ public class MultiPlayerView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        // prüft ob eine collision stattfindet
         collision();
+        // aktualisiere die position des remote balls
         ballView2.setRemoteBall(remoteBallX);
 
         if(elapsedTime > animationDuration && !gameOver) {
+            // wenn server (und nicht client!)
             if(isServer) {
+                // erstelle ein neues balken und speichere die position
                 newBalkPosX = balkView.addNewRandomBalk();
+                // ein neues balken erstellt
                 isNewBalkAdded = true;
             }
             elapsedTime = 0;
@@ -85,6 +92,9 @@ public class MultiPlayerView extends View {
         this.postInvalidateDelayed(1000 / framesPerSecond);
     }
 
+    /**
+     * prüft ob eine collision stattgefunden hat
+     */
     public void collision() {
         for(int i = 0; i < balkView.getBalkX().length; i++) {
             if(balkView.getBalkX()[i]+BALK_Y >= ballView.getBallY()-ballView.getBallR() && balkView.getBalkY()[i] <= ballView.getBallY()+ballView.getBallR()) {
@@ -96,23 +106,43 @@ public class MultiPlayerView extends View {
         }
     }
 
+    /**
+     * setzt die x position des remote balls
+     * @param x die position des remote balls
+     */
     public void setRemoteBallX(int x) {
         this.remoteBallX = x;
     }
 
+    /**
+     * gibt die x position des balls
+     * @return position des balls
+     */
     public int getLocalBallX() {
         return ballView.getBallX();
     }
 
+    /**
+     * prüft ob ein neues balken erstellt wurde
+     * @return
+     */
     public boolean isNewBalkAdded() {
         return isNewBalkAdded;
     }
 
+    /**
+     * gibt die x position des neu erstellten balkens
+     * @return position des neu erstellten balkens
+     */
     public int getNewBalkPosX() {
         isNewBalkAdded = false;
         return newBalkPosX;
     }
 
+    /**
+     * setzt die x position des neu erstellten balkens
+     * @param x position des neu erstellten balkens
+     */
     public void setLocalNewBalkPosX(int x) {
         balkView.addNewBalk(x);
     }

@@ -48,6 +48,7 @@ public class ClientActivity extends Activity{
         buttonClear = (Button)findViewById(R.id.clear);
         textResponse = (TextView)findViewById(R.id.response);
 
+        // Wach bleiben
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "");
         wakeLock.acquire();
@@ -73,11 +74,14 @@ public class ClientActivity extends Activity{
 
                 @Override
                 public void onClick(View arg0) {
+                    // hole die eingegebenen daten (ip & port)
                     MyClientTask myClientTask = new MyClientTask(
                             editTextAddress.getText().toString(),
                             Integer.parseInt(editTextPort.getText().toString()));
                     myClientTask.execute();
+                    // aktiviere den sensor
                     Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+                    // starte das spiel
                     multiPlayerView = new MultiPlayerView(activity, activity, sensorService, false);
                 }};
 
@@ -100,31 +104,38 @@ public class ClientActivity extends Activity{
             try {
                 socket = new Socket(dstAddress, dstPort);
 
-    /*
-     * notice:
-     * inputStream.read() will block if no data return
-     */
+                // wenn daten empfangen
                 boolean ok = false;
-                int zahl = 0;
+                // variable fur empfangene daten
+                int zahl;
 
+                // variablen fur senden und empfangen
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
+                // loop fur das kontinuierliche senden & empfangen
                 while (true) {
+                    // wenn daten empfangen
                     if(ok) {
+                        // sende koordinaten vom localen ball
                         out.println(multiPlayerView.getLocalBallX());
                         ok = false;
                     }
                     else {
+                        // lese daten
                         response = in.readLine();
+                        // wenn "newBalk" empfangen
                         if(response.equals("newBalk")) {
                             response = in.readLine();
                             zahl = Integer.valueOf(response);
+                            // erstelle neuen balken
                             multiPlayerView.setLocalNewBalkPosX(zahl);
                             response = in.readLine();
                         }
+                        // umwandlung von string zu int
                         zahl = Integer.valueOf(response);
                         ok = true;
+                        // setze remote ball position
                         multiPlayerView.setRemoteBallX(zahl);
                     }
                 }

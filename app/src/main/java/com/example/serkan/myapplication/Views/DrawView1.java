@@ -6,20 +6,17 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-import com.example.serkan.myapplication.Database.DatabaseHandler;
 import com.example.serkan.myapplication.Drawables.Balk;
 import com.example.serkan.myapplication.Drawables.Ball;
-import com.example.serkan.myapplication.Drawables.Score;
 import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
 
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 /**
  * Created on 29.03.2015.
+ * -------------------------------------------------------------------------------------------------
+ * ---------------------------------- UNRELEVANT FUR UNSER PROJEKT ---------------------------------
+ * -------------------------------------------------------------------------------------------------
  */
 public class DrawView1 extends View {
     Paint paint = new Paint();
@@ -69,9 +66,6 @@ public class DrawView1 extends View {
         drawBalks(canvas);
         if(!gameOver) {
             updateBallPosition(canvas);
-        }
-        else {
-            setHighScore(this.getContext());
         }
         drawBall(canvas);
         drawText(canvas);
@@ -148,18 +142,5 @@ public class DrawView1 extends View {
                 }
             }
         }
-    }
-
-    private void setHighScore(Context context) {
-        if(points > 0){
-            DateFormat dateForm = new SimpleDateFormat("dd MMMM yyyy");
-            String dateOutput = dateForm.format(new Date());
-
-            Score score = new Score(dateOutput, points);
-            DatabaseHandler db = new DatabaseHandler(context);
-            db.addScore(score);
-            points = 0;
-        }
-
     }
 }
