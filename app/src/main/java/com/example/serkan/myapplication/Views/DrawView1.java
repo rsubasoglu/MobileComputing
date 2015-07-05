@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.view.View;
 
 import com.example.serkan.myapplication.Drawables.Balk;
@@ -53,7 +54,7 @@ public class DrawView1 extends View {
         }
 
         // create ball
-        ball = new Ball(MAX_X/2, 1500, 50);
+        ball = new Ball(MAX_X/2, 1500, 50, (SensorManager)sensorService);
 
         // start the animation
         this.startTime = System.currentTimeMillis();

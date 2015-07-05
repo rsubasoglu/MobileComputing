@@ -2,6 +2,7 @@ package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -80,7 +81,7 @@ public class ClientActivity extends Activity{
                             Integer.parseInt(editTextPort.getText().toString()));
                     myClientTask.execute();
                     // aktiviere den sensor
-                    Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+                    SensorManager sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
                     // starte das spiel
                     multiPlayerView = new MultiPlayerView(activity, activity, sensorService, false);
                 }};

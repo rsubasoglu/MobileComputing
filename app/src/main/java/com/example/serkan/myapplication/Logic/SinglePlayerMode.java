@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -20,7 +21,7 @@ public class SinglePlayerMode {
     BallView ballView;
     BalkView balkView;
 
-    public SinglePlayerMode(Activity activity, Object sensorService) {
+    public SinglePlayerMode(Activity activity, SensorManager sensorService) {
         this.activity = activity;
 
         ballView = new BallView(activity, sensorService, new Paint());

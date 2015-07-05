@@ -2,26 +2,20 @@ package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.example.serkan.myapplication.R;
 import com.example.serkan.myapplication.Views.MultiPlayerView;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 /**
  * Created on 09.05.2015.
@@ -50,7 +44,7 @@ public class MultiplayerActivity  extends Activity {
         socketServerThread.start();
 
         // aktiviere den sensor
-        Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+        SensorManager sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         // starte das spiel (sollte erst dann geschehen wenn verbindung aufgebaut!!!)
         mpv = new MultiPlayerView(this, this, sensorService, true);
     }

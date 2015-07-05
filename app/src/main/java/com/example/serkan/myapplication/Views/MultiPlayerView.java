@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -41,7 +42,7 @@ public class MultiPlayerView extends View {
     boolean gameOver = false;
     int remoteBallX = 0;
 
-    public MultiPlayerView(Context context, Activity activity, Object sensorService, boolean isServer) {
+    public MultiPlayerView(Context context, Activity activity, SensorManager sensorService, boolean isServer) {
         super(context);
         this.activity = activity;
         this.isServer = isServer;
@@ -73,7 +74,7 @@ public class MultiPlayerView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        // prüft ob eine collision stattfindet
+        // prueft ob eine collision stattfindet
         collision();
         // aktualisiere die position des remote balls
         ballView2.setRemoteBall(remoteBallX);
@@ -93,7 +94,7 @@ public class MultiPlayerView extends View {
     }
 
     /**
-     * prüft ob eine collision stattgefunden hat
+     * prueft ob eine collision stattgefunden hat
      */
     public void collision() {
         for(int i = 0; i < balkView.getBalkX().length; i++) {
@@ -123,7 +124,7 @@ public class MultiPlayerView extends View {
     }
 
     /**
-     * prüft ob ein neues balken erstellt wurde
+     * prueft ob ein neues balken erstellt wurde
      * @return
      */
     public boolean isNewBalkAdded() {

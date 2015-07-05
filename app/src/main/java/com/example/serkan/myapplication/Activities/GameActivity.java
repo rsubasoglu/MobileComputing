@@ -2,6 +2,7 @@ package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import com.example.serkan.myapplication.R;
@@ -25,7 +26,7 @@ public class GameActivity extends Activity {
         setContentView(R.layout.activity_game);
 
         //gamePrefs = getSharedPreferences(GAME_PREFS, 0);
-        Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+        SensorManager sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         /*
         TextView ball = (TextView) findViewById(R.id.textView2);
