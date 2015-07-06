@@ -29,10 +29,7 @@ public class AccelerometerSensor implements SensorEventListener {
 
     @Override
     public final void onSensorChanged(SensorEvent event) {
-        // The light sensor returns a single value.
         // Many sensors return 3 values, one for each axis.
-        //float newX = event.values[0];
-        //if(Math.abs(newX - x) > 0.05)
         x = event.values[2];
         y = event.values[1];
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.View;
 
@@ -20,7 +21,6 @@ public class BallView extends View {
     long elapsedTime = 0;
 
     private Paint paint = new Paint();
-    AccelerometerSensor accSensor;
 
     // display coord. & balk size
     private int MAX_X = 1080;
@@ -32,14 +32,16 @@ public class BallView extends View {
     // game variables
     private boolean gameOver = true;
 
-    public BallView(Context context, Object sensorService, Paint paint) {
+    public BallView(Context context, SensorManager sensorService, Paint paint) {
         super(context);
         if(sensorService != null) {
-            accSensor = new AccelerometerSensor(sensorService);
+            // create ball
+            this.ball = new Ball(MAX_X/2, 1500, 50, sensorService);
             gameOver = false;
         }
-        // create ball
-        this.ball = new Ball(MAX_X/2, 1500, 50);
+        else {
+            this.ball = new Ball(MAX_X/2, 1500, 50, null);
+        }
 
         this.paint = paint;
 
@@ -50,56 +52,59 @@ public class BallView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        // wenn spiel nicht beendet
         if(!gameOver) {
-            updateBallPosition(canvas);
+            // hier spiel stoppen
         }
+        // zeichnet den ball
         drawBall(canvas);
-
-        if(elapsedTime > animationDuration && !gameOver) {
-
-            elapsedTime = 0;
-        }
-        elapsedTime++;
         this.postInvalidateDelayed(1000 / framesPerSecond);
     }
 
-    public void updateBallPosition(Canvas canvas) {
-        // parameter x from accSensor:
-        // 80 = left, 0 = center, -80 = right
-        // get x parameter from sensor and convert it to percent
-        float sensorX = accSensor.getX() * (-1);
-        float sensorXPercent = (sensorX + 40) * 100 / (80);
-        if(sensorXPercent > 100)
-            sensorXPercent = 100;
-        else if(sensorXPercent < 0)
-            sensorXPercent = 0;
-        // calculate the percent number in display coord.
-        int coordX = (int)(sensorXPercent * MAX_X / 100);
-        //canvas.drawText(String.valueOf(coordX), MAX_X / 2, MAX_Y / 2, paint);
-        //if((ball.getX() - coordX) > 10 || (coordX - ball.getX()) > 10)
-        ball.setX(coordX);
-    }
-
+    /**
+     * zeichnet den ball
+     * @param canvas
+     */
     public void drawBall(Canvas canvas) {
         canvas.drawCircle(ball.getX(), ball.getY(), ball.getR(), paint);
     }
 
+    /**
+     * gibt die x position vom ball
+     * @return position des balls
+     */
     public int getBallX() {
         return ball.getX();
     }
 
+    /**
+     * gibt die y position vom ball
+     * @return position des balls
+     */
     public int getBallY() {
         return ball.getY();
     }
 
+    /**
+     * gibt den radius vom ball
+     * @return raduis des balls
+     */
     public float getBallR() {
         return ball.getR();
     }
 
+    /**
+     * spiel verloren
+     * @param gameOver
+     */
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
 
+    /**
+     * aktualisiert die position des remote balls
+     * @param x
+     */
     public void setRemoteBall(int x) {
         ball.setX(x);
     }

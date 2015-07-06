@@ -14,6 +14,9 @@ import com.example.serkan.myapplication.R;
 /**
  * Created on 24.03.2015.
  * Quelle: http://developer.android.com/guide/topics/sensors/sensors_overview.html
+ * -------------------------------------------------------------------------------------------------
+ * ---------------------------------- UNRELEVANT FUR UNSER PROJEKT ---------------------------------
+ * -------------------------------------------------------------------------------------------------
  */
 
 public class SensorActivity extends Activity implements SensorEventListener {

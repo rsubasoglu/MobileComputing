@@ -5,12 +5,16 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.SensorManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
  * Created on 07.05.2015.
+ * -------------------------------------------------------------------------------------------------
+ * ---------------------------------- UNRELEVANT FUR UNSER PROJEKT ---------------------------------
+ * -------------------------------------------------------------------------------------------------
  */
 public class SinglePlayerView extends View{
     int framesPerSecond = 60;
@@ -33,7 +37,7 @@ public class SinglePlayerView extends View{
     // game variables
     boolean gameOver = false;
 
-    public SinglePlayerView(Context context, Activity activity, Object sensorService) {
+    public SinglePlayerView(Context context, Activity activity, SensorManager sensorService) {
         super(context);
         this.activity = activity;
 

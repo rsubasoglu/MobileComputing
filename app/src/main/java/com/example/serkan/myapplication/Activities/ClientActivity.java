@@ -2,6 +2,7 @@ package com.example.serkan.myapplication.Activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -48,6 +49,7 @@ public class ClientActivity extends Activity{
         buttonClear = (Button)findViewById(R.id.clear);
         textResponse = (TextView)findViewById(R.id.response);
 
+        // Wach bleiben
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "");
         wakeLock.acquire();
@@ -73,11 +75,14 @@ public class ClientActivity extends Activity{
 
                 @Override
                 public void onClick(View arg0) {
+                    // hole die eingegebenen daten (ip & port)
                     MyClientTask myClientTask = new MyClientTask(
                             editTextAddress.getText().toString(),
                             Integer.parseInt(editTextPort.getText().toString()));
                     myClientTask.execute();
-                    Object sensorService = getSystemService(Context.SENSOR_SERVICE);
+                    // aktiviere den sensor
+                    SensorManager sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+                    // starte das spiel
                     multiPlayerView = new MultiPlayerView(activity, activity, sensorService, false);
                 }};
 
@@ -86,12 +91,10 @@ public class ClientActivity extends Activity{
         String dstAddress;
         int dstPort;
         String response = "";
-        Activity activity;
 
         MyClientTask(String addr, int port){
             dstAddress = addr;
             dstPort = port;
-            this.activity = activity;
         }
 
         @Override
@@ -102,74 +105,38 @@ public class ClientActivity extends Activity{
             try {
                 socket = new Socket(dstAddress, dstPort);
 
-                // receive
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);
-                byte[] buffer = new byte[1024];
+                // wenn daten empfangen
+                boolean ok = false;
+                // variable fur empfangene daten
+                int zahl;
 
-                // send
-                //OutputStream outputStream = socket.getOutputStream();
-                //PrintStream printStream = new PrintStream(outputStream);
-
-                int bytesRead;
-                //while(true) {
-                //    InputStream inputStream = socket.getInputStream();
-                //    Log.e("n", "erster while");
-    /*
-     * notice:
-     * inputStream.read() will block if no data return
-     */
-                    boolean ok = false;
-                    int zahl = 0;
-                    int zaehler = 0;
-
-                /*
-                    while (true) {
-                        if(ok) {
-                            OutputStream outputStream = socket.getOutputStream();
-                            PrintStream printStream = new PrintStream(outputStream);
-                            printStream.print(zahl);
-                            ok = false;
-                            Log.e("n", "erste if");
-                            outputStream.flush();
-                        }
-                        else {
-                            Log.e("n", "else if");
-                            InputStream inputStream = socket.getInputStream();
-                            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                byteArrayOutputStream.write(buffer, 0, bytesRead);
-                                response = byteArrayOutputStream.toString("UTF-8");
-                                String temp = response.substring(0, 3);
-                                zahl = Integer.valueOf(temp);
-                                Log.e("n", "while -" + zahl);
-                                response = "";
-                                ok = true;
-                                //socket.shutdownInput();
-
-                                multiPlayerView.setRemoteBallX(zahl);
-                                break;
-                            }
-                        }
-                    }
-                    */
-                //}
+                // variablen fur senden und empfangen
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
+                // loop fur das kontinuierliche senden & empfangen
                 while (true) {
+                    // wenn daten empfangen
                     if(ok) {
+                        // sende koordinaten vom localen ball
                         out.println(multiPlayerView.getLocalBallX());
                         ok = false;
                     }
                     else {
+                        // lese daten
                         response = in.readLine();
+                        // wenn "newBalk" empfangen
                         if(response.equals("newBalk")) {
                             response = in.readLine();
                             zahl = Integer.valueOf(response);
+                            // erstelle neuen balken
                             multiPlayerView.setLocalNewBalkPosX(zahl);
                             response = in.readLine();
                         }
+                        // umwandlung von string zu int
                         zahl = Integer.valueOf(response);
                         ok = true;
+                        // setze remote ball position
                         multiPlayerView.setRemoteBallX(zahl);
                     }
                 }

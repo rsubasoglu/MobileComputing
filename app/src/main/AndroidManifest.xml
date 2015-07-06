@@ -23,20 +23,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.SekActivity"
-            android:label="@string/title_activity_sek">
-        </activity>
-        <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
         <activity
             android:name=".Activities.GameActivity"
             android:label="@string/title_activity_game">
-        </activity>
-        <activity
-            android:name=".Activities.RankingActivity"
-            android:label="@string/title_activity_ranking">
         </activity>
         <activity
             android:name=".Activities.SensorActivity"
