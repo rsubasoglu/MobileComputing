@@ -38,10 +38,13 @@ public class BluetoothActivity extends Activity {
 
     private BluetoothAdapter mBluetoothAdapter;
     private ArrayAdapter<String> mArrayAdapter;
-    private String NAME;
-    private UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");;
+    private String NAME = "testname";
+    private UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private int REQUEST_ENABLE_BT = 1;
-    private BluetoothServerSocket mmServerSocket;
+
+    AcceptThread acc; //Objekterstellung - Thread fuer BT Server Socket
+    //private BluetoothServerSocket mmServerSocket;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,9 @@ public class BluetoothActivity extends Activity {
             getPairedDevices();
             if(mBluetoothAdapter.startDiscovery())
                 getDiscoveringDevices();
+
+            acc = new AcceptThread(); //Objekterstellung - Thread fuer BT Server Socket
+            acc.run();
         }
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,19 +82,18 @@ public class BluetoothActivity extends Activity {
                 Log.e("klicked device typ", klickedDeviceTyp);
                 Log.e("klicked device id", klickedDeviceID);
 
-                if(klickedDeviceTyp == "paired") {
+                if(klickedDeviceTyp.equals("paired")) {
                     /* HIER WERDEN NUR DIE GEKOPPELTEN GERATE EINGELESEN UND GEPRUFT */
                     Iterator<BluetoothDevice> iterator = mBluetoothAdapter.getBondedDevices().iterator();
 
                     while (iterator.hasNext()) {
                         BluetoothDevice selectedDevice = iterator.next();
-
+                        //Log.e("iterator.getadress",selectedDevice.getAddress());
                         if (selectedDevice.getAddress().equals(klickedDeviceID)) {
-                            Log.e("n", "adressess equal");
-                            AcceptThread acc = new AcceptThread();
-                            acc.run();
+                            //Log.e("n", "adressess equal");
                         }
                     }
+
                 } else if (klickedDeviceTyp == "found") {
                     /* die IDs von gefundenen Geraten muss hier zur Uberprufung mit dem geklickten Gerat prasent sein */
                 }
@@ -96,7 +101,6 @@ public class BluetoothActivity extends Activity {
         });
 
     }
-
 
     public void getPairedDevices() {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
@@ -135,7 +139,6 @@ public class BluetoothActivity extends Activity {
         mListView.setAdapter(mArrayAdapter);
     }
 
-
     private class AcceptThread extends Thread {
         private final BluetoothServerSocket mmServerSocket;
 
@@ -163,6 +166,7 @@ public class BluetoothActivity extends Activity {
                 if (socket != null) {
                     // Do work to manage the connection (in a separate thread)
                     ConnectedThread conn = new ConnectedThread(socket);
+                    conn.run();
                     //manageConnectedSocket(socket);
                     cancel(); //close server
                     break;

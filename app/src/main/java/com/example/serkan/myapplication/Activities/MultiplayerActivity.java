@@ -14,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -39,14 +41,13 @@ public class MultiplayerActivity  extends Activity {
         wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "");
         wakeLock.acquire();
 
-        // warte auf verbindungen in einem neuen thread
-        Thread socketServerThread = new Thread(new SocketServerThread(this));
-        socketServerThread.start();
-
         // aktiviere den sensor
         SensorManager sensorService = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        // starte das spiel (sollte erst dann geschehen wenn verbindung aufgebaut!!!)
-        mpv = new MultiPlayerView(this, this, sensorService, true);
+
+        // warte auf verbindungen in einem neuen thread
+        Thread socketServerThread = new Thread(new SocketServerThread(this, sensorService));
+        socketServerThread.start();
+
     }
 
     @Override
@@ -71,9 +72,11 @@ public class MultiplayerActivity  extends Activity {
 
         static final int SocketServerPORT = 8080;
         Activity activity;
+        SensorManager sensorService;
 
-        public SocketServerThread(Activity activity) {
+        public SocketServerThread(Activity activity, SensorManager sensorService) {
             this.activity = activity;
+            this.sensorService = sensorService;
         }
 
         @Override
@@ -82,17 +85,44 @@ public class MultiplayerActivity  extends Activity {
                 // erstellt einen socket mit festgelegtem port
                 serverSocket = new ServerSocket(SocketServerPORT);
 
-                while (true) {
+                //while (true) {
+
+                //----------------------------------
+
+                //------------------------------------
+
                     // programm wartet hier solange bis eine verbindung hergestellt wurde
                     Socket socket = serverSocket.accept();
                     Log.e("n", "" + socket.getRemoteSocketAddress());
 
+                    // nach verbindungsaufbau wird ein neues thread gestartet
+                    Runnable myRunnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            // starte das spiel
+                            mpv = new MultiPlayerView(activity, activity, sensorService, true);
+                            // thread gibt bescheid das es fertig ist
+                            synchronized (this) {
+                                this.notify();
+                            }
+                        }
+                    };
+
+                    synchronized (myRunnable) {
+                        // das thread "myRunnable" wird gestartet
+                        activity.runOnUiThread(myRunnable);
+                        // hier wird gewartet bis das thread fertig ist
+                        myRunnable.wait();
+                    }
+
                     SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(socket, activity);
                     socketServerReplyThread.run();
 
-                }
+                //}
             } catch (IOException e) {
                 // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
