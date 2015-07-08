@@ -25,8 +25,8 @@ import java.net.Socket;
  */
 public class MultiplayerActivity  extends Activity {
     // socket variable fur die verbindung
-    ServerSocket serverSocket;
-    MultiPlayerView mpv;
+    private ServerSocket serverSocket;
+    private MultiPlayerView mpv;
 
     // variable furs wach bleiben
     private PowerManager.WakeLock wakeLock;
