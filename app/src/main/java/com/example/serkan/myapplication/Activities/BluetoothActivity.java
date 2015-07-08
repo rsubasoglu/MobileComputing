@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.serkan.myapplication.R;
-import com.example.serkan.myapplication.Views.BluetoothView;
 import com.example.serkan.myapplication.Views.MultiPlayerView;
 
 import java.io.BufferedReader;
@@ -194,7 +193,7 @@ public class BluetoothActivity extends Activity {
                         @Override
                         public void run() {
                             // starte das spiel
-                            mpv = new MultiPlayerView(activity, activity, sensorService, false);
+                            mpv = new MultiPlayerView(activity, activity, sensorService, true);
                             // thread gibt bescheid das es fertig ist
                             synchronized (this) {
                                 this.notify();
