@@ -11,16 +11,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
- * Created on 07.05.2015.
- * -------------------------------------------------------------------------------------------------
- * ---------------------------------- UNRELEVANT FUR UNSER PROJEKT ---------------------------------
- * -------------------------------------------------------------------------------------------------
+ * Created on 10.05.2015.
  */
-public class SinglePlayerView extends View{
+public class SinglePlayerView extends View {
     int framesPerSecond = 60;
-    long animationDuration = 30; // 2 seconds
     long startTime;
-    long elapsedTime = 0;
 
     Activity activity;
 
@@ -44,6 +39,7 @@ public class SinglePlayerView extends View{
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         ballView = new BallView(activity, sensorService, paint);
+
         balkView = new BalkView(activity);
 
         FrameLayout fl = new FrameLayout(activity);
@@ -63,16 +59,15 @@ public class SinglePlayerView extends View{
 
     @Override
     public void onDraw(Canvas canvas) {
+        // prueft ob eine collision stattfindet
         collision();
 
-        if(elapsedTime > animationDuration && !gameOver) {
-
-            elapsedTime = 0;
-        }
-        elapsedTime++;
         this.postInvalidateDelayed(1000 / framesPerSecond);
     }
 
+    /**
+     * prueft ob eine collision stattgefunden hat
+     */
     public void collision() {
         for(int i = 0; i < balkView.getBalkX().length; i++) {
             if(balkView.getBalkX()[i]+BALK_Y >= ballView.getBallY()-ballView.getBallR() && balkView.getBalkY()[i] <= ballView.getBallY()+ballView.getBallR()) {
@@ -84,7 +79,11 @@ public class SinglePlayerView extends View{
         }
     }
 
-    public int getBallX() {
+    /**
+     * gibt die x position des balls
+     * @return position des balls
+     */
+    public int getLocalBallX() {
         return ballView.getBallX();
     }
 }

@@ -23,24 +23,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.SettingsActivity"
-            android:label="@string/title_activity_settings">
-        </activity>
-        <activity
             android:name=".Activities.GameActivity"
             android:label="@string/title_activity_game">
         </activity>
         <activity
-            android:name=".Activities.SensorActivity"
-            android:label="@string/title_activity_sensor">
-        </activity>
-        <activity
             android:name=".Activities.MultiplayerActivity"
             android:label="@string/title_activity_multiplayer">
-        </activity>
-        <activity
-            android:name=".Activities.ClientActivity"
-            android:label="@string/title_activity_client">
         </activity>
         <activity
             android:name=".Activities.BluetoothActivity"
