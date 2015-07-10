@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.Set;
@@ -152,6 +151,8 @@ public class BluetoothActivity extends Activity {
         mListView.setAdapter(mArrayAdapter);
     }
 
+    /* Connect as Server */
+
     private class AcceptThread extends Thread {
 
         private final BluetoothServerSocket mmServerSocket;
@@ -202,9 +203,9 @@ public class BluetoothActivity extends Activity {
                     };
 
                     synchronized (myRunnable) {
-                        // das thread "myRunnable" wird gestartet
+                        // der thread "myRunnable" wird gestartet
                         activity.runOnUiThread(myRunnable);
-                        // hier wird gewartet bis das thread fertig ist
+                        // hier wird gewartet bis der thread fertig ist
                         try {
                             myRunnable.wait();
                         } catch (InterruptedException e) {
@@ -442,13 +443,6 @@ public class BluetoothActivity extends Activity {
             }
         }
 
-        /* Call this from the main activity to send data to the remote device */
-        public void write(byte[] bytes) {
-            try {
-                mmOutStream.write(bytes);
-            } catch (IOException e) { }
-        }
-
         /* Call this from the main activity to shutdown the connection */
         public void cancel() {
             try {
@@ -456,121 +450,4 @@ public class BluetoothActivity extends Activity {
             } catch (IOException e) { }
         }
     }
-
-    /*private class BluetoothConnection extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final InputStream mmInStream;
-        private final OutputStream mmOutStream;
-        byte[] buffer;
-
-        // Unique UUID for this application, you may use different
-        private final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-
-        public BluetoothConnection(BluetoothDevice device) {
-
-            BluetoothSocket tmp = null;
-
-            // Get a BluetoothSocket for a connection with the given BluetoothDevice
-            try {
-                tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mmSocket = tmp;
-
-            //now make the socket connection in separate thread to avoid FC
-            Thread connectionThread  = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    // Always cancel discovery because it will slow down a connection
-                    mBluetoothAdapter.cancelDiscovery();
-
-                    // Make a connection to the BluetoothSocket
-                    try {
-                        // This is a blocking call and will only return on a
-                        // successful connection or an exception
-                        mmSocket.connect();
-                    } catch (IOException e) {
-                        //connection to device failed so close the socket
-                        try {
-                            mmSocket.close();
-                        } catch (IOException e2) {
-                            e2.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-            connectionThread.start();
-
-            InputStream tmpIn = null;
-            OutputStream tmpOut = null;
-
-            // Get the BluetoothSocket input and output streams
-            try {
-                tmpIn = mmSocket.getInputStream();
-                tmpOut = mmSocket.getOutputStream();
-                buffer = new byte[1024];
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            mmInStream = tmpIn;
-            mmOutStream = tmpOut;
-        }
-
-        public void run() {
-
-            try {
-                int zahl = 0;
-                String response = "";
-                boolean ok = true;
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(mmSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(mmSocket.getOutputStream(), true);
-
-                // Keep listening to the InputStream while connected
-                while (true) {
-                    if (ok) {
-                        /*if(mpv.isNewBalkAdded()) {
-                            out.println("newBalk");
-                            out.println(mpv.getNewBalkPosX());
-                        }*/
-    /*
-                        out.println("test");
-                        ok = false;
-                    }
-                    else {
-                        response = in.readLine();
-                        Log.e("n", response);
-                        //zahl = Integer.valueOf(response);
-                        //mpv.setRemoteBallX(zahl);
-                        ok = true;
-                    }
-                }
-            } catch (IOException e) {
-                //an exception here marks connection loss
-                //send message to UI Activity
-            }
-        }
-
-        public void write(byte[] buffer) {
-            try {
-                //write the data to socket stream
-                mmOutStream.write(buffer);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-*/
 }

@@ -2,14 +2,11 @@ package com.example.serkan.myapplication.Views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.SensorManager;
-import android.util.Log;
 import android.view.View;
 
 import com.example.serkan.myapplication.Drawables.Ball;
-import com.example.serkan.myapplication.Sensors.AccelerometerSensor;
 
 /**
  * Created on 07.05.2015.
