@@ -48,7 +48,6 @@ public class ClientActivity extends Activity{
         editTextPort = (EditText)findViewById(R.id.port);
         buttonConnect = (Button)findViewById(R.id.connect);
         buttonClear = (Button)findViewById(R.id.clear);
-        textResponse = (TextView)findViewById(R.id.response);
 
         // Wach bleiben
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
