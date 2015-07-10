@@ -15,7 +15,9 @@ import android.widget.FrameLayout;
  */
 public class SinglePlayerView extends View {
     int framesPerSecond = 60;
+    long animationDuration = 30; // 2 seconds
     long startTime;
+    long elapsedTime = 0;
 
     Activity activity;
 
@@ -62,6 +64,12 @@ public class SinglePlayerView extends View {
         // prueft ob eine collision stattfindet
         collision();
 
+        if(elapsedTime > animationDuration && !gameOver) {
+            // erstelle ein neues balken und speichere die position
+            balkView.addNewRandomBalk();
+            elapsedTime = 0;
+        }
+        elapsedTime++;
         this.postInvalidateDelayed(1000 / framesPerSecond);
     }
 
