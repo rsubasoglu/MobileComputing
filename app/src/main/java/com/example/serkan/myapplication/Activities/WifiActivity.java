@@ -27,7 +27,7 @@ import java.net.Socket;
  * Created on 09.05.2015.
  * quelle: http://android-er.blogspot.de/2014/02/android-sercerclient-example-server.html
  */
-public class MultiplayerActivity  extends Activity {
+public class WifiActivity extends Activity {
     // socket variable fur die verbindung
     private ServerSocket serverSocket;
     private MultiPlayerView mpv;

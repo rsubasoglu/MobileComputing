@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
 
         // Zuweisung der XML Objekte an unsere Variabeln
         Button gameButton = (Button) findViewById(R.id.gameButton);
-        Button multiplayerButton = (Button) findViewById(R.id.multiplayerButton);
+        Button wifiButton = (Button) findViewById(R.id.wifiButton);
         Button bluetoothButton = (Button) findViewById(R.id.bluetoothButton);
 
         gameButton.setOnClickListener(new View.OnClickListener() {
@@ -39,14 +39,14 @@ public class MainActivity extends Activity {
             }
         });
 
-        multiplayerButton.setOnClickListener(new View.OnClickListener() {
+        wifiButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View arg0) {
                 //Neues Intent anlegen
-                Intent nextScreen = new Intent(getApplicationContext(), MultiplayerActivity.class);
+                Intent nextScreen = new Intent(getApplicationContext(), WifiActivity.class);
 
                 // Log schreiben für Logausgabe
-                Log.e("n", "wechsel zu Multiplayer");
+                Log.e("n", "wechsel zu Wifi");
 
                 // Intent starten und zur zweiten Activity wechseln
                 startActivity(nextScreen);

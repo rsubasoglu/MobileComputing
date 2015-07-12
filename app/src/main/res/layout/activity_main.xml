@@ -8,34 +8,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/settingsButton"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Game"
+        android:text="SinglePlayer"
         android:id="@+id/gameButton"
         android:layout_gravity="center_horizontal" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sensor"
-        android:id="@+id/sensorButton"
-        android:layout_gravity="center_horizontal" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Multiplayer"
-        android:id="@+id/multiplayerButton"
-        android:layout_gravity="center_horizontal" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Client"
-        android:id="@+id/clientButton"
+        android:text="WiFi"
+        android:id="@+id/wifiButton"
         android:layout_gravity="center_horizontal" />
     <Button
         android:layout_width="wrap_content"
