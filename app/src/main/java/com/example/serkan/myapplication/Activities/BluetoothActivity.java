@@ -74,8 +74,10 @@ public class BluetoothActivity extends Activity {
             activity = this;
 
             // warte auf verbindungen in einem neuen thread
-            Thread AcceptThread = new Thread(new AcceptThread(sensorService));
-            AcceptThread.start();
+            if(mBluetoothAdapter.isEnabled()) {
+                Thread AcceptThread = new Thread(new AcceptThread(sensorService));
+                AcceptThread.start();
+            }
         }
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
