@@ -101,10 +101,10 @@ public class BalkView extends View {
     public void drawBalks(Canvas canvas) {
         for(int i = 0; i < balks.length; i++) {
             // zeichnet die lucken
-            paint.setColor(Color.BLACK);
+            paint.setColor(Color.rgb(187,67,169));
             canvas.drawRect(0, balks[i].getY(), MAX_X, balks[i].getY()+BALK_Y, paint);
             // zeichnet die balken
-            paint.setColor(Color.RED);
+            paint.setColor(Color.rgb(51,58,63));
             canvas.drawRect(balks[i].getX(), balks[i].getY(), balks[i].getX()+BALK_X, balks[i].getY()+BALK_Y, paint);
             // wenn spiel nicht beendet
             if(!gameOver)

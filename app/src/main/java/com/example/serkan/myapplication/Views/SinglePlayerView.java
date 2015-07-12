@@ -39,7 +39,7 @@ public class SinglePlayerView extends View {
         this.activity = activity;
 
         Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.rgb(245, 172, 0));
         ballView = new BallView(activity, sensorService, paint);
 
         balkView = new BalkView(activity);
@@ -47,6 +47,7 @@ public class SinglePlayerView extends View {
         FrameLayout fl = new FrameLayout(activity);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         fl.setLayoutParams(lp);
+        fl.setBackgroundColor(Color.rgb(51,58,63));
 
         fl.addView(this);
         fl.addView(balkView);

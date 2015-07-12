@@ -48,17 +48,18 @@ public class MultiPlayerView extends View {
         this.isServer = isServer;
 
         Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.rgb(245, 172, 0));
         ballView = new BallView(activity, sensorService, paint);
 
         Paint paint2 = new Paint();
-        paint2.setColor(Color.GRAY);
+        paint2.setColor(Color.rgb(115, 217, 243));
         ballView2 = new BallView(activity, null, paint2);
         balkView = new BalkView(activity);
 
         FrameLayout fl = new FrameLayout(activity);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         fl.setLayoutParams(lp);
+        fl.setBackgroundColor(Color.rgb(51, 58, 63));
 
         fl.addView(this);
         fl.addView(balkView);
