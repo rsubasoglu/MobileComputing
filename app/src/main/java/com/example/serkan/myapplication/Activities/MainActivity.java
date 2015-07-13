@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
         // Die benötigte XML-Layout Datei:
         setContentView(R.layout.activity_main);
 
-        // Zuweisung der XML Objekte an unsere Variabeln
+        // Zuweisung der XML Objekte (buttons) an unsere Variabeln
         Button gameButton = (Button) findViewById(R.id.gameButton);
         Button wifiButton = (Button) findViewById(R.id.wifiButton);
         Button bluetoothButton = (Button) findViewById(R.id.bluetoothButton);
