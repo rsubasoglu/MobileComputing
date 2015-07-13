@@ -20,8 +20,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 /**
  * Created on 09.05.2015.
@@ -52,6 +55,9 @@ public class WifiActivity extends Activity {
         editTextPort = (EditText)findViewById(R.id.port);
         buttonConnect = (Button)findViewById(R.id.connect);
         buttonClear = (Button)findViewById(R.id.clear);
+        TextView textView = (TextView)findViewById(R.id.textView3);
+
+        textView.setText("Your IP: " + getIpAddress());
 
         // wach bleiben
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -326,7 +332,6 @@ public class WifiActivity extends Activity {
         }
     }
 
-    /*
     private String getIpAddress() {
         String ip = "";
         try {
@@ -341,8 +346,7 @@ public class WifiActivity extends Activity {
                     InetAddress inetAddress = enumInetAddress.nextElement();
 
                     if (inetAddress.isSiteLocalAddress()) {
-                        ip += "SiteLocalAddress: "
-                                + inetAddress.getHostAddress() + "\n";
+                        ip = inetAddress.getHostAddress();
                     }
 
                 }
@@ -357,6 +361,5 @@ public class WifiActivity extends Activity {
 
         return ip;
     }
-    */
 
 }

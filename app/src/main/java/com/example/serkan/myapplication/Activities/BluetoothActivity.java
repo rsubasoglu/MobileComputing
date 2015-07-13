@@ -47,8 +47,6 @@ public class BluetoothActivity extends Activity {
     private MultiPlayerView mpv;
     SensorManager sensorService;
     Activity activity;
-    //AcceptThread acc; //Objekterstellung - Thread fuer BT Server Socket
-    //private BluetoothServerSocket mmServerSocket;
 
 
     protected void onCreate(Bundle savedInstanceState) {
